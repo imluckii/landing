@@ -1,0 +1,114 @@
+index.html<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>imlucky</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+
+    p {
+      color: #aaa;
+      margin-bottom: 35px;
+      font-size: 16px;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .link {
+      position: relative;
+      text-decoration: none;
+      color: #fff;
+      border: 1px solid #1f1f1f;
+      padding: 16px;
+      border-radius: 14px;
+      background: #111;
+      overflow: hidden;
+
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    /* underline */
+    .link::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #fff, #aaa);
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+    }
+
+    /* hover */
+    .link:hover {
+      transform: translateY(-4px) scale(1.03);
+      border-color: #333;
+      background: #161616;
+    }
+
+    .link:hover::after {
+      width: 60%;
+    }
+
+    .footer {
+      margin-top: 45px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>imlucky</h1>
+    <p>developer, owner @ Lurec Network</p>
+
+    <div class="links">
+      <a class="link" href="#" target="_blank">Join Discord</a>
+      <a class="link" href="#">Server IP: play.yourserver.com</a>
+      <a class="link" href="#" target="_blank">GitHub</a>
+    </div>
+
+    <div class="footer">
+      Currently building: Lurec Network
+    </div>
+  </div>
+</body>
+</html>
