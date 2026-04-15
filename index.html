@@ -4,190 +4,163 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>imlucky</title>
-
       <link
          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
          rel="stylesheet"
-      />
-
+         />
       <style>
          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Inter", sans-serif;
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         font-family: "Inter", sans-serif;
          }
-
          body {
-            background: #000;
-            color: #9a9a9a;
-
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transform: translateY(-6%);
+         background: #000;
+         color: #9a9a9a;
+         min-height: 100vh;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transform: translateY(-6%);
          }
-
          .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 0 28px;
+         width: 100%;
+         max-width: 420px;
+         padding: 0 28px;
          }
-
          /* fade */
          .fade {
-            opacity: 0;
-            transform: translateY(6px);
-            animation: fadeUp 0.45s ease forwards;
+         opacity: 0;
+         transform: translateY(6px);
+         animation: fadeUp 0.45s ease forwards;
          }
-
          @keyframes fadeUp {
-            to {
-               opacity: 1;
-               transform: translateY(0);
-            }
+         to {
+         opacity: 1;
+         transform: translateY(0);
          }
-
+         }
          .d1 {
-            animation-delay: 0.05s;
+         animation-delay: 0.05s;
          }
          .d2 {
-            animation-delay: 0.1s;
+         animation-delay: 0.1s;
          }
          .d3 {
-            animation-delay: 0.15s;
+         animation-delay: 0.15s;
          }
          .d4 {
-            animation-delay: 0.2s;
+         animation-delay: 0.2s;
          }
-
          /* HEADER */
          h1 {
-            font-size: 26px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 10px;
+         font-size: 26px;
+         font-weight: 600;
+         color: #fff;
+         margin-bottom: 10px;
          }
-
          .subtitle {
-            font-size: 13px;
-            color: #777;
-            margin-bottom: 48px;
+         font-size: 13px;
+         color: #777;
+         margin-bottom: 48px;
          }
-
          /* MAIN LINK */
          .main-link {
-            position: relative;
-            font-size: 17px;
-            color: #aaa;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 64px;
-            transition: color 0.2s ease;
+         position: relative;
+         font-size: 17px;
+         color: #aaa;
+         text-decoration: none;
+         display: inline-flex;
+         align-items: center;
+         gap: 6px;
+         margin-bottom: 64px;
+         transition: color 0.2s ease;
          }
-
          .main-link::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -3px;
-            width: 100%;
-            height: 1px;
-            background: #fff;
-
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.25s ease;
+         content: "";
+         position: absolute;
+         left: 0;
+         bottom: -3px;
+         width: 100%;
+         height: 1px;
+         background: #fff;
+         transform: scaleX(0);
+         transform-origin: left;
+         transition: transform 0.25s ease;
          }
-
          .main-link span {
-            opacity: 0;
-            font-size: 12px;
-            transition: opacity 0.2s ease;
+         opacity: 0;
+         font-size: 12px;
+         transition: opacity 0.2s ease;
          }
-
          .main-link:hover {
-            color: #fff;
+         color: #fff;
          }
-
          .main-link:hover::after {
-            transform: scaleX(1);
+         transform: scaleX(1);
          }
-
          .main-link:hover span {
-            opacity: 1;
+         opacity: 1;
          }
-
          /* FOOTER */
          .bottom {
-            display: flex;
-            gap: 18px;
-            font-size: 13px;
+         display: flex;
+         gap: 18px;
+         font-size: 13px;
          }
-
          .bottom a {
-            position: relative;
-            text-decoration: none;
-            color: #666;
-            transition:
-               color 0.2s ease,
-               transform 0.2s ease;
+         position: relative;
+         text-decoration: none;
+         color: #666;
+         transition:
+         color 0.2s ease,
+         transform 0.2s ease;
          }
-
          /* subtle underline */
          .bottom a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 1px;
-            background: #aaa;
-
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.25s ease;
+         content: "";
+         position: absolute;
+         left: 0;
+         bottom: -2px;
+         width: 100%;
+         height: 1px;
+         background: #aaa;
+         transform: scaleX(0);
+         transform-origin: left;
+         transition: transform 0.25s ease;
          }
-
          /* hover effect */
          .bottom a:hover {
-            color: #fff;
-            transform: translateY(-1px);
+         color: #fff;
+         transform: translateY(-1px);
          }
-
          .bottom a:hover::after {
-            transform: scaleX(1);
+         transform: scaleX(1);
          }
-
-         /* subtle glow */
          body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(
-               circle at center,
-               rgba(255, 255, 255, 0.025),
-               transparent 60%
-            );
-            z-index: -1;
+         content: "";
+         position: fixed;
+         inset: 0;
+         /* layered background */
+         background:
+         /* grid */
+         linear-gradient(rgba(0, 80, 255, 0.08) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(0, 80, 255, 0.08) 1px, transparent 1px),
+         /* subtle glow center */
+         radial-gradient(circle at center, rgba(0, 80, 255, 0.08), transparent 60%);
+         background-size: 40px 40px, 40px 40px, 100% 100%;
+         z-index: -1;
          }
       </style>
    </head>
-
    <body>
       <div class="container">
          <h1 class="fade d1">imlucky</h1>
-
          <div class="subtitle fade d2">developer · owner @ Lurec Network</div>
-
          <a class="main-link fade d3" href="https://lurec.net" target="_blank">
-            lurec.net <span>↗</span>
+         lurec.net <span>↗</span>
          </a>
-
          <div class="bottom fade d4">
             <a href="https://github.com/imluckii" target="_blank">gh</a>
             <a href="https://x.com/imlucki_" target="_blank">x</a>
@@ -195,7 +168,7 @@
                href="https://discord.com/users/531847986091917312"
                target="_blank"
                >dc</a
-            >
+               >
          </div>
       </div>
    </body>
