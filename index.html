@@ -288,7 +288,8 @@
       touch-action: manipulation;
     }
 
-    .skill:hover {
+    .skill:hover,
+    .skill.active {
       color: #fff;
       border-color: rgba(255, 255, 255, 0.15);
       background: rgba(255, 255, 255, 0.06);
@@ -586,10 +587,17 @@
         requestAnimationFrame(function () {
           tooltip.classList.add('show');
         });
+
+        // lock the highlight to this skill so the CSS :hover can't
+        // drift to a neighbour while the marquee is paused/scrolling
+        if (currentSkill) currentSkill.classList.remove('active');
+        currentSkill = skill;
+        skill.classList.add('active');
       }
 
       function hideTip() {
         tooltip.classList.remove('show');
+        if (currentSkill) currentSkill.classList.remove('active');
         currentSkill = null;
         resumeMarquee();
       }
