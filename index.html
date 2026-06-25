@@ -47,6 +47,7 @@
       padding: 24px 0;
     }
 
+    /* ── animated background grid (fades in on load) ── */
     body::before {
       content: "";
       position: fixed;
@@ -59,29 +60,53 @@
       background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%;
       z-index: -1;
       pointer-events: none;
+      opacity: 0;
+      animation: gridFadeIn 1.4s ease forwards;
     }
+    @keyframes gridFadeIn { to { opacity: 1; } }
 
     .container {
       width: 100%;
       max-width: 440px;
       padding: 0 28px;
+      position: relative;
     }
 
-    /* fade */
+    /* ── soft ambient glow rising behind container ── */
+    .container::after {
+      content: "";
+      position: absolute;
+      top: -60px;
+      left: -40px;
+      right: -40px;
+      bottom: -40px;
+      background: radial-gradient(ellipse 60% 50% at center top, rgba(0, 80, 255, 0.05), transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0;
+      animation: glowRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+    }
+    @keyframes glowRise {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── staggered entrance (blur clears as elements rise) ── */
     .fade {
       opacity: 0;
-      transform: translateY(6px);
-      animation: fadeUp 0.45s ease forwards;
+      transform: translateY(10px);
+      filter: blur(5px);
+      animation: reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
-    .d1 { animation-delay: 0.05s; }
-    .d2 { animation-delay: 0.1s; }
-    .d3 { animation-delay: 0.15s; }
-    .d4 { animation-delay: 0.2s; }
-    .d5 { animation-delay: 0.25s; }
-    .d6 { animation-delay: 0.3s; }
+    .d1 { animation-delay: 0.08s; }
+    .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.28s; }
+    .d4 { animation-delay: 0.38s; }
+    .d5 { animation-delay: 0.48s; }
+    .d6 { animation-delay: 0.58s; }
 
     /* ── profile header ── */
     .profile {
@@ -98,6 +123,11 @@
       object-fit: cover;
       border: 2px solid rgba(255, 255, 255, 0.08);
       flex-shrink: 0;
+      animation: avatarBreath 4s ease-in-out 1.2s infinite;
+    }
+    @keyframes avatarBreath {
+      0%, 100% { box-shadow: 0 0 12px rgba(0, 80, 255, 0.10); }
+      50% { box-shadow: 0 0 22px rgba(0, 80, 255, 0.20); }
     }
 
     .profile-info h1 {
@@ -123,6 +153,12 @@
       background: #23a55a;
       border-radius: 50%;
       display: inline-block;
+      animation: dotPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0% { box-shadow: 0 0 0 0 rgba(35, 165, 90, 0.5); }
+      70% { box-shadow: 0 0 0 5px rgba(35, 165, 90, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(35, 165, 90, 0); }
     }
 
     /* ── about ── */
@@ -158,14 +194,24 @@
       margin-bottom: 28px;
       text-decoration: none;
       color: inherit;
-      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+      transition:
+        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .project-card:hover {
       color: #fff;
       border-color: rgba(255, 255, 255, 0.12);
       background: rgba(255, 255, 255, 0.04);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 80, 255, 0.06);
+    }
+
+    .project-card:active {
+      transform: translateY(0) scale(0.985);
+      transition-duration: 0.08s;
     }
 
     .project-top {
@@ -184,11 +230,12 @@
     .project-arrow {
       font-size: 13px;
       color: #555;
-      transition: color 0.2s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
     }
 
     .project-card:hover .project-arrow {
       color: #aaa;
+      transform: translate(2px, -2px);
     }
 
     .project-desc {
@@ -202,7 +249,6 @@
       margin-bottom: 28px;
       position: relative;
       overflow: hidden;
-      /* extend slightly beyond container so fade is visible on narrow screens */
       margin-left: -16px;
       margin-right: -16px;
       padding-left: 16px;
@@ -230,7 +276,11 @@
       padding: 6px 14px;
       border-radius: 6px;
       cursor: default;
-      transition: all 0.25s ease;
+      transition:
+        color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
       flex-shrink: 0;
       margin-right: 8px;
@@ -254,16 +304,18 @@
       padding: 12px 16px;
       max-width: 240px;
       opacity: 0;
-      transform: translateY(6px);
+      transform: translateY(6px) scale(0.96);
       pointer-events: none;
-      transition: opacity 0.18s ease, transform 0.18s ease;
+      transition:
+        opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 9999;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     .tooltip.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .tooltip::after {
@@ -274,6 +326,13 @@
       transform: translateX(-50%);
       border: 6px solid transparent;
       border-top-color: #141416;
+    }
+
+    .tooltip.below::after {
+      top: auto;
+      bottom: 100%;
+      border-top-color: transparent;
+      border-bottom-color: #141416;
     }
 
     .tooltip-title {
@@ -362,11 +421,13 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .fade { animation: none; opacity: 1; transform: none; }
+      .fade { animation: none; opacity: 1; transform: none; filter: none; }
       .marquee { animation: none; flex-wrap: wrap; width: 100%; }
       .marquee-wrap { mask-image: none; -webkit-mask-image: none; }
       .skill { margin-right: 6px; margin-bottom: 6px; }
       .tooltip { transition: none; }
+      .avatar, .status-dot { animation: none; }
+      body::before, .container::after { animation: none; opacity: 1; }
       html { scroll-behavior: auto; }
       * { transition: none !important; }
     }
@@ -491,14 +552,14 @@
         titleEl.textContent = title;
         descEl.textContent = desc;
 
-        // make visible first so we can measure height
-        tooltip.style.visibility = 'hidden';
-        tooltip.classList.add('show');
+        var tipWidth = Math.min(240, window.innerWidth - 16);
+        tooltip.style.width = tipWidth + 'px';
+
+        // measure height — works because tooltip is rendered (just transparent),
+        // no need for visibility hacks that cause flicker
         var tipHeight = tooltip.offsetHeight;
-        tooltip.style.visibility = '';
 
         var rect = skill.getBoundingClientRect();
-        var tipWidth = Math.min(240, window.innerWidth - 16);
         var gap = 12;
 
         // position above the skill, centered
@@ -509,13 +570,22 @@
         left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
 
         // if not enough space above, show below
-        if (top < 8) top = rect.bottom + gap;
+        if (top < 8) {
+          top = rect.bottom + gap;
+          tooltip.classList.add('below');
+        } else {
+          tooltip.classList.remove('below');
+        }
 
         tooltip.style.left = left + 'px';
         tooltip.style.top = top + 'px';
-        tooltip.style.width = tipWidth + 'px';
-        tooltip.classList.add('show');
+
         pauseMarquee();
+
+        // use rAF so position is painted before the show transition triggers
+        requestAnimationFrame(function () {
+          tooltip.classList.add('show');
+        });
       }
 
       function hideTip() {
