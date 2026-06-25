@@ -33,7 +33,10 @@
       box-sizing: border-box;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
 
     body {
       font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -45,6 +48,7 @@
       display: grid;
       place-items: center;
       padding: 24px 0;
+      overflow-x: hidden;
     }
 
     /* ── ambient background (soft light, no grid) ── */
@@ -68,6 +72,7 @@
       max-width: 440px;
       padding: 0 28px;
       position: relative;
+      overflow-x: clip;
     }
 
     /* ── soft ambient glow rising behind container ── */
