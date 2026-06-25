@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>imlucky</title>
   <meta name="description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Creator of Lurec Network (15k+ players). Available for freelance work." />
   <meta name="author" content="imlucky" />
@@ -47,23 +47,21 @@
       padding: 24px 0;
     }
 
-    /* ── animated background grid (fades in on load) ── */
+    /* ── ambient background (soft light, no grid) ── */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background:
-        linear-gradient(rgba(0, 80, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 80, 255, 0.04) 1px, transparent 1px),
-        radial-gradient(ellipse at 30% 20%, rgba(0, 60, 200, 0.06), transparent 50%),
-        radial-gradient(ellipse at 70% 80%, rgba(80, 0, 200, 0.04), transparent 50%);
-      background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%;
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0, 80, 255, 0.07), transparent 70%),
+        radial-gradient(ellipse 50% 35% at 80% 100%, rgba(40, 0, 120, 0.05), transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(0, 100, 200, 0.03), transparent 70%);
       z-index: -1;
       pointer-events: none;
       opacity: 0;
-      animation: gridFadeIn 1.4s ease forwards;
+      animation: bgFadeIn 1.6s ease forwards;
     }
-    @keyframes gridFadeIn { to { opacity: 1; } }
+    @keyframes bgFadeIn { to { opacity: 1; } }
 
     .container {
       width: 100%;
