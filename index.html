@@ -323,7 +323,8 @@
       content: "";
       position: absolute;
       top: 100%;
-      left: 50%;
+      /* JS sets --arrow-x as percentage of tooltip width */
+      left: var(--arrow-x, 50%);
       transform: translateX(-50%);
       border: 6px solid transparent;
       border-top-color: #141416;
@@ -580,6 +581,13 @@
 
         tooltip.style.left = left + 'px';
         tooltip.style.top = top + 'px';
+
+        // position arrow so it points at the skill center, not the tooltip center
+        // this matters when clamping shifts the tooltip away from the skill
+        var skillCenter = rect.left + rect.width / 2;
+        var arrowX = skillCenter - left;          // px from tooltip left edge
+        arrowX = Math.max(20, Math.min(arrowX, tipWidth - 20)); // clamp inside tooltip
+        tooltip.style.setProperty('--arrow-x', arrowX + 'px');
 
         pauseMarquee();
 
