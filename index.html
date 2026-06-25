@@ -1,175 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>imlucky</title>
-      <link
-         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-         rel="stylesheet"
-         />
-      <style>
-         * {
-         margin: 0;
-         padding: 0;
-         box-sizing: border-box;
-         font-family: "Inter", sans-serif;
-         }
-         body {
-         background: #000;
-         color: #9a9a9a;
-         min-height: 100vh;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         transform: translateY(-6%);
-         }
-         .container {
-         width: 100%;
-         max-width: 420px;
-         padding: 0 28px;
-         }
-         /* fade */
-         .fade {
-         opacity: 0;
-         transform: translateY(6px);
-         animation: fadeUp 0.45s ease forwards;
-         }
-         @keyframes fadeUp {
-         to {
-         opacity: 1;
-         transform: translateY(0);
-         }
-         }
-         .d1 {
-         animation-delay: 0.05s;
-         }
-         .d2 {
-         animation-delay: 0.1s;
-         }
-         .d3 {
-         animation-delay: 0.15s;
-         }
-         .d4 {
-         animation-delay: 0.2s;
-         }
-         /* HEADER */
-         h1 {
-         font-size: 26px;
-         font-weight: 600;
-         color: #fff;
-         margin-bottom: 10px;
-         }
-         .subtitle {
-         font-size: 13px;
-         color: #777;
-         margin-bottom: 48px;
-         }
-         /* MAIN LINK */
-         .main-link {
-         position: relative;
-         font-size: 17px;
-         color: #aaa;
-         text-decoration: none;
-         display: inline-flex;
-         align-items: center;
-         gap: 6px;
-         margin-bottom: 64px;
-         transition: color 0.2s ease;
-         }
-         .main-link::after {
-         content: "";
-         position: absolute;
-         left: 0;
-         bottom: -3px;
-         width: 100%;
-         height: 1px;
-         background: #fff;
-         transform: scaleX(0);
-         transform-origin: left;
-         transition: transform 0.25s ease;
-         }
-         .main-link span {
-         opacity: 0;
-         font-size: 12px;
-         transition: opacity 0.2s ease;
-         }
-         .main-link:hover {
-         color: #fff;
-         }
-         .main-link:hover::after {
-         transform: scaleX(1);
-         }
-         .main-link:hover span {
-         opacity: 1;
-         }
-         /* FOOTER */
-         .bottom {
-         display: flex;
-         gap: 18px;
-         font-size: 13px;
-         }
-         .bottom a {
-         position: relative;
-         text-decoration: none;
-         color: #666;
-         transition:
-         color 0.2s ease,
-         transform 0.2s ease;
-         }
-         /* subtle underline */
-         .bottom a::after {
-         content: "";
-         position: absolute;
-         left: 0;
-         bottom: -2px;
-         width: 100%;
-         height: 1px;
-         background: #aaa;
-         transform: scaleX(0);
-         transform-origin: left;
-         transition: transform 0.25s ease;
-         }
-         /* hover effect */
-         .bottom a:hover {
-         color: #fff;
-         transform: translateY(-1px);
-         }
-         .bottom a:hover::after {
-         transform: scaleX(1);
-         }
-         body::before {
-         content: "";
-         position: fixed;
-         inset: 0;
-         /* layered background */
-         background:
-         /* grid */
-         linear-gradient(rgba(0, 80, 255, 0.08) 1px, transparent 1px),
-         linear-gradient(90deg, rgba(0, 80, 255, 0.08) 1px, transparent 1px),
-         /* subtle glow center */
-         radial-gradient(circle at center, rgba(0, 80, 255, 0.08), transparent 60%);
-         background-size: 40px 40px, 40px 40px, 100% 100%;
-         z-index: -1;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="container">
-         <h1 class="fade d1">imlucky</h1>
-         <div class="subtitle fade d2">developer · owner @ Lurec Network</div>
-         <a class="main-link fade d3" href="https://lurec.net" target="_blank">
-         lurec.net <span>↗</span>
-         </a>
-         <div class="bottom fade d4">
-            <a href="https://github.com/imluckii" target="_blank">gh</a>
-            <a href="https://x.com/imlucki_" target="_blank">x</a>
-            <a
-               href="https://discord.com/users/531847986091917312"
-               target="_blank"
-               >dc</a
-               >
-         </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imlucky</title>
+  <meta name="description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Creator of Lurec Network (15k+ players). Available for freelance work." />
+  <meta name="author" content="imlucky" />
+  <meta name="theme-color" content="#0a0a0b" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="imlucky" />
+  <meta property="og:description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Available for freelance work." />
+  <meta property="og:type" content="profile" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/167329163?v=4" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="imlucky" />
+  <meta name="twitter:description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Available for freelance work." />
+  <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/167329163?v=4" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0b'/><text x='50' y='72' font-size='62' text-anchor='middle' fill='%23f0f0f0' font-family='sans-serif' font-weight='600'>i</text></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a0b;
+      color: #b0b0b0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(0, 80, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 80, 255, 0.04) 1px, transparent 1px),
+        radial-gradient(ellipse at 30% 20%, rgba(0, 60, 200, 0.06), transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(80, 0, 200, 0.04), transparent 50%);
+      background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      padding: 0 28px;
+    }
+
+    /* fade */
+    .fade {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: fadeUp 0.45s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.1s; }
+    .d3 { animation-delay: 0.15s; }
+    .d4 { animation-delay: 0.2s; }
+    .d5 { animation-delay: 0.25s; }
+    .d6 { animation-delay: 0.3s; }
+
+    /* ── profile header ── */
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+
+    .profile-info h1 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #f0f0f0;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #23a55a;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── about ── */
+    .about {
+      margin: 28px 0 32px;
+      font-size: 13.5px;
+      color: #777;
+      line-height: 1.7;
+    }
+
+    .about strong {
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    /* ── section label ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #444;
+      margin-bottom: 12px;
+    }
+
+    /* ── project card ── */
+    .project-card {
+      display: block;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 28px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-card:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-1px);
+    }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .project-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: #e0e0e0;
+    }
+
+    .project-arrow {
+      font-size: 13px;
+      color: #555;
+      transition: color 0.2s ease;
+    }
+
+    .project-card:hover .project-arrow {
+      color: #aaa;
+    }
+
+    .project-desc {
+      font-size: 12.5px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* ── skills marquee ── */
+    .marquee-wrap {
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+      /* extend slightly beyond container so fade is visible on narrow screens */
+      margin-left: -16px;
+      margin-right: -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    }
+
+    .marquee {
+      display: flex;
+      width: max-content;
+      animation: scroll 20s linear infinite;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .skill {
+      font-size: 12px;
+      color: #777;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: default;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-right: 8px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .skill:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-2px);
+    }
+
+    /* ── floating tooltip (JS-driven, outside marquee overflow) ── */
+    .tooltip {
+      position: fixed;
+      background: #141416;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 16px;
+      max-width: 240px;
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 9999;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #141416;
+    }
+
+    .tooltip-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: 3px;
+    }
+
+    .tooltip-desc {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* ── footer links ── */
+    .bottom {
+      display: flex;
+      gap: 18px;
+      font-size: 13px;
+    }
+
+    .bottom a {
+      position: relative;
+      text-decoration: none;
+      color: #666;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .bottom a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background: #aaa;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .bottom a:hover {
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .bottom a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ── contact ── */
+    .contact {
+      margin-top: 32px;
+      font-size: 12px;
+      color: #444;
+    }
+
+    .contact a {
+      position: relative;
+      color: #666;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .contact a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1px;
+      background: #aaa;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .contact a:hover {
+      color: #ccc;
+      transform: translateY(-1px);
+    }
+
+    .contact a:hover::after {
+      transform: scaleX(1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade { animation: none; opacity: 1; transform: none; }
+      .marquee { animation: none; flex-wrap: wrap; width: 100%; }
+      .marquee-wrap { mask-image: none; -webkit-mask-image: none; }
+      .skill { margin-right: 6px; margin-bottom: 6px; }
+      .tooltip { transition: none; }
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 40px 20px;
+      }
+      .avatar {
+        width: 42px;
+        height: 42px;
+      }
+      .profile-info h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="profile fade d1">
+      <img
+        class="avatar"
+        src="https://avatars.githubusercontent.com/u/167329163?v=4"
+        alt="imlucky"
+      />
+      <div class="profile-info">
+        <h1>imlucky</h1>
+        <div class="status">
+          <span class="status-dot"></span>
+          available for work
+        </div>
       </div>
-   </body>
+    </div>
+
+    <div class="about fade d2">
+      18, self-taught. I build <strong>Minecraft Bedrock servers</strong> and the plugins
+      that run them. Also do freelance plugin work — hit me up if you need something built.
+    </div>
+
+    <div class="section-label fade d3">projects</div>
+
+    <a class="project-card fade d3" href="https://lurec.net" target="_blank" rel="noopener noreferrer" aria-label="Lurec Network — Minecraft Bedrock practice server">
+      <div class="project-top">
+        <div class="project-name">Lurec Network</div>
+        <div class="project-arrow">↗</div>
+      </div>
+      <div class="project-desc">
+        Multi-region Minecraft Bedrock practice server. Custom plugins, matchmaking, anti-cheat — 15k+ players and counting.
+      </div>
+    </a>
+
+    <div class="section-label fade d4">stack</div>
+
+    <div class="marquee-wrap fade d4">
+      <div class="marquee">
+        <span class="skill" data-title="PHP" data-desc="Main language. PocketMine plugins, backends, web stuff.">PHP</span>
+        <span class="skill" data-title="PocketMine-MP" data-desc="Bedrock server software. Where I spend most of my time.">PocketMine</span>
+        <span class="skill" data-title="JavaScript" data-desc="Web frontends, tooling, automation scripts.">JavaScript</span>
+        <span class="skill" data-title="Linux" data-desc="Server admin, bash, keeping things running at 3am.">Linux</span>
+        <span class="skill" data-title="MySQL" data-desc="Databases for player data, stats, and everything in between.">MySQL</span>
+        <span class="skill" data-title="Docker" data-desc="Containerizing servers and services for easy deployment.">Docker</span>
+        <span class="skill" data-title="Git" data-desc="Version control. Can't live without it.">Git</span>
+        <span class="skill" data-title="REST APIs" data-desc="Connecting plugins to web services, Tebex, Discord bots.">REST APIs</span>
+        <!-- duplicate for seamless loop -->
+        <span class="skill" data-title="PHP" data-desc="Main language. PocketMine plugins, backends, web stuff.">PHP</span>
+        <span class="skill" data-title="PocketMine-MP" data-desc="Bedrock server software. Where I spend most of my time.">PocketMine</span>
+        <span class="skill" data-title="JavaScript" data-desc="Web frontends, tooling, automation scripts.">JavaScript</span>
+        <span class="skill" data-title="Linux" data-desc="Server admin, bash, keeping things running at 3am.">Linux</span>
+        <span class="skill" data-title="MySQL" data-desc="Databases for player data, stats, and everything in between.">MySQL</span>
+        <span class="skill" data-title="Docker" data-desc="Containerizing servers and services for easy deployment.">Docker</span>
+        <span class="skill" data-title="Git" data-desc="Version control. Can't live without it.">Git</span>
+        <span class="skill" data-title="REST APIs" data-desc="Connecting plugins to web services, Tebex, Discord bots.">REST APIs</span>
+      </div>
+    </div>
+
+    <div class="bottom fade d5">
+      <a href="https://github.com/imluckii" target="_blank" rel="noopener noreferrer" aria-label="GitHub">gh</a>
+      <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">x</a>
+      <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer" aria-label="Discord">dc</a>
+    </div>
+
+    <div class="contact fade d6">
+      need something built? <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord</a> or <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x</a>
+    </div>
+
+  </div>
+
+  <!-- floating tooltip (outside marquee overflow context) -->
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-title" id="tooltip-title"></div>
+    <div class="tooltip-desc" id="tooltip-desc"></div>
+  </div>
+
+  <script>
+    (function () {
+      var tooltip = document.getElementById('tooltip');
+      var titleEl = document.getElementById('tooltip-title');
+      var descEl = document.getElementById('tooltip-desc');
+      var marquee = document.querySelector('.marquee');
+      var currentSkill = null;
+      var isTouch = false;
+      var hideTimer = null;
+
+      function pauseMarquee() {
+        marquee.style.animationPlayState = 'paused';
+      }
+
+      function resumeMarquee() {
+        marquee.style.animationPlayState = 'running';
+      }
+
+      function showTip(skill) {
+        var title = skill.getAttribute('data-title');
+        var desc = skill.getAttribute('data-desc');
+        if (!title) return;
+
+        // cancel any pending hide
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+
+        titleEl.textContent = title;
+        descEl.textContent = desc;
+
+        // make visible first so we can measure height
+        tooltip.style.visibility = 'hidden';
+        tooltip.classList.add('show');
+        var tipHeight = tooltip.offsetHeight;
+        tooltip.style.visibility = '';
+
+        var rect = skill.getBoundingClientRect();
+        var tipWidth = Math.min(240, window.innerWidth - 16);
+        var gap = 12;
+
+        // position above the skill, centered
+        var left = rect.left + rect.width / 2 - tipWidth / 2;
+        var top = rect.top - tipHeight - gap;
+
+        // clamp to viewport
+        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
+
+        // if not enough space above, show below
+        if (top < 8) top = rect.bottom + gap;
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+        tooltip.style.width = tipWidth + 'px';
+        tooltip.classList.add('show');
+        pauseMarquee();
+      }
+
+      function hideTip() {
+        tooltip.classList.remove('show');
+        currentSkill = null;
+        resumeMarquee();
+      }
+
+      function scheduleHide() {
+        if (hideTimer) clearTimeout(hideTimer);
+        hideTimer = setTimeout(hideTip, 80);
+      }
+
+      function cancelHide() {
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+      }
+
+      document.querySelectorAll('.skill').forEach(function (skill) {
+        // desktop: hover
+        skill.addEventListener('mouseenter', function () {
+          if (isTouch) return;
+          cancelHide();
+          showTip(skill);
+        });
+        skill.addEventListener('mouseleave', function () {
+          if (isTouch) return;
+          scheduleHide();
+        });
+
+        // mobile: tap to show, tap again or tap outside to hide
+        skill.addEventListener('touchstart', function (e) {
+          e.preventDefault();
+          isTouch = true;
+          if (currentSkill === skill) {
+            hideTip();
+          } else {
+            showTip(skill);
+            currentSkill = skill;
+          }
+        }, { passive: false });
+      });
+
+      // dismiss on touch outside
+      document.addEventListener('touchstart', function (e) {
+        if (currentSkill && !currentSkill.contains(e.target)) {
+          hideTip();
+        }
+      });
+
+      // dismiss on scroll
+      window.addEventListener('scroll', hideTip, { passive: true });
+    })();
+  </script>
+</body>
 </html>
