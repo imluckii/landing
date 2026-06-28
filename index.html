@@ -427,9 +427,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .fade { animation: none; opacity: 1; transform: none; filter: none; }
-      .marquee { animation: none; flex-wrap: wrap; width: 100%; }
-      .marquee-wrap { mask-image: none; -webkit-mask-image: none; }
-      .skill { margin-right: 6px; margin-bottom: 6px; }
+      .marquee { animation: scroll 40s linear infinite; }
       .tooltip { transition: none; }
       .avatar, .status-dot { animation: none; }
       body::before, .container::after { animation: none; opacity: 1; }
