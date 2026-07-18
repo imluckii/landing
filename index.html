@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>imlucky</title>
-  <meta name="description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Creator of Lurec Network (15k+ players). Available for freelance work." />
+  <meta name="description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work." />
   <meta name="author" content="imlucky" />
   <meta name="theme-color" content="#0a0a0b" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="imlucky" />
-  <meta property="og:description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Available for freelance work." />
+  <meta property="og:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work." />
   <meta property="og:type" content="profile" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/167329163?v=4" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="imlucky" />
-  <meta name="twitter:description" content="Self-taught developer building Minecraft Bedrock servers and plugins. Available for freelance work." />
+  <meta name="twitter:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work." />
   <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/167329163?v=4" />
 
   <!-- Favicon -->
@@ -27,6 +27,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -49,6 +54,15 @@
       place-items: center;
       padding: 24px 0;
       overflow-x: hidden;
+    }
+
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::selection {
+      background: rgba(0, 80, 255, 0.35);
+      color: #f0f0f0;
     }
 
     /* ── ambient background (soft light, no grid) ── */
@@ -87,7 +101,7 @@
       z-index: -1;
       pointer-events: none;
       opacity: 0;
-      animation: glowRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+      animation: glowRise 1.8s var(--ease-out) 0.1s forwards;
     }
     @keyframes glowRise {
       from { opacity: 0; transform: translateY(20px) scale(0.95); }
@@ -97,19 +111,19 @@
     /* ── staggered entrance (blur clears as elements rise) ── */
     .fade {
       opacity: 0;
-      transform: translateY(10px);
-      filter: blur(5px);
-      animation: reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transform: translateY(12px);
+      filter: blur(6px);
+      animation: reveal 0.9s var(--ease-out) forwards;
     }
     @keyframes reveal {
       to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
-    .d1 { animation-delay: 0.08s; }
-    .d2 { animation-delay: 0.18s; }
-    .d3 { animation-delay: 0.28s; }
-    .d4 { animation-delay: 0.38s; }
-    .d5 { animation-delay: 0.48s; }
-    .d6 { animation-delay: 0.58s; }
+    .d1 { animation-delay: 0.06s; }
+    .d2 { animation-delay: 0.14s; }
+    .d3 { animation-delay: 0.22s; }
+    .d4 { animation-delay: 0.30s; }
+    .d5 { animation-delay: 0.38s; }
+    .d6 { animation-delay: 0.46s; }
 
     /* ── profile header ── */
     .profile {
@@ -127,7 +141,14 @@
       border: 2px solid rgba(255, 255, 255, 0.08);
       flex-shrink: 0;
       animation: avatarBreath 4s ease-in-out 1.2s infinite;
+      transition: transform 0.4s var(--ease-out), border-color 0.3s var(--ease-soft);
     }
+
+    .avatar:hover {
+      transform: scale(1.05);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
     @keyframes avatarBreath {
       0%, 100% { box-shadow: 0 0 12px rgba(0, 80, 255, 0.10); }
       50% { box-shadow: 0 0 22px rgba(0, 80, 255, 0.20); }
@@ -198,10 +219,10 @@
       text-decoration: none;
       color: inherit;
       transition:
-        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-color 0.35s var(--ease-soft),
+        background 0.35s var(--ease-soft),
+        transform 0.35s var(--ease-out),
+        box-shadow 0.35s var(--ease-soft);
     }
 
     .project-card:hover {
@@ -228,12 +249,17 @@
       font-size: 15px;
       font-weight: 500;
       color: #e0e0e0;
+      transition: color 0.3s var(--ease-soft);
+    }
+
+    .project-card:hover .project-name {
+      color: #fff;
     }
 
     .project-arrow {
       font-size: 13px;
       color: #555;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+      transition: transform 0.35s var(--ease-out), color 0.25s var(--ease-soft);
     }
 
     .project-card:hover .project-arrow {
@@ -245,6 +271,11 @@
       font-size: 12.5px;
       color: #666;
       line-height: 1.5;
+      transition: color 0.3s var(--ease-soft);
+    }
+
+    .project-card:hover .project-desc {
+      color: #7d7d7d;
     }
 
     /* ── skills marquee ── */
@@ -264,6 +295,7 @@
       display: flex;
       width: max-content;
       animation: scroll 20s linear infinite;
+      will-change: transform;
     }
 
     @keyframes scroll {
@@ -280,10 +312,10 @@
       border-radius: 6px;
       cursor: default;
       transition:
-        color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-        border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-        background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        color 0.25s var(--ease-soft),
+        border-color 0.25s var(--ease-soft),
+        background 0.25s var(--ease-soft),
+        transform 0.25s var(--ease-out);
       white-space: nowrap;
       flex-shrink: 0;
       margin-right: 8px;
@@ -299,6 +331,11 @@
       transform: translateY(-2px);
     }
 
+    .skill:active {
+      transform: translateY(0) scale(0.96);
+      transition-duration: 0.1s;
+    }
+
     /* ── floating tooltip (JS-driven, outside marquee overflow) ── */
     .tooltip {
       position: fixed;
@@ -311,15 +348,22 @@
       transform: translateY(6px) scale(0.96);
       pointer-events: none;
       transition:
-        opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity 0.22s var(--ease-soft),
+        transform 0.22s var(--ease-soft);
       z-index: 9999;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
+    /* once visible, position changes animate too — the tooltip glides
+       between chips instead of jumping */
     .tooltip.show {
       opacity: 1;
       transform: translateY(0) scale(1);
+      transition:
+        opacity 0.22s var(--ease-soft),
+        transform 0.22s var(--ease-soft),
+        left 0.3s var(--ease-out),
+        top 0.3s var(--ease-out);
     }
 
     .tooltip::after {
@@ -331,6 +375,7 @@
       transform: translateX(-50%);
       border: 6px solid transparent;
       border-top-color: #141416;
+      transition: left 0.3s var(--ease-out);
     }
 
     .tooltip.below::after {
@@ -364,7 +409,7 @@
       position: relative;
       text-decoration: none;
       color: #666;
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
     }
 
     .bottom a::after {
@@ -377,7 +422,7 @@
       background: #aaa;
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.25s ease;
+      transition: transform 0.3s var(--ease-out);
     }
 
     .bottom a:hover {
@@ -400,7 +445,7 @@
       position: relative;
       color: #666;
       text-decoration: none;
-      transition: color 0.2s ease, transform 0.2s ease;
+      transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
     }
 
     .contact a::after {
@@ -413,7 +458,7 @@
       background: #aaa;
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.25s ease;
+      transition: transform 0.3s var(--ease-out);
     }
 
     .contact a:hover {
@@ -425,10 +470,18 @@
       transform: scaleX(1);
     }
 
+    /* ── keyboard focus ── */
+    .project-card:focus-visible,
+    .bottom a:focus-visible,
+    .contact a:focus-visible {
+      outline: 1px solid rgba(255, 255, 255, 0.25);
+      outline-offset: 3px;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .fade { animation: none; opacity: 1; transform: none; filter: none; }
       .marquee { animation: scroll 40s linear infinite; }
-      .tooltip { transition: none; }
+      .tooltip, .tooltip.show { transition: none; }
       .avatar, .status-dot { animation: none; }
       body::before, .container::after { animation: none; opacity: 1; }
       html { scroll-behavior: auto; }
@@ -468,8 +521,8 @@
     </div>
 
     <div class="about fade d2">
-      18, self-taught. I build <strong>Minecraft Bedrock servers</strong> and the plugins
-      that run them. Also do freelance plugin work — hit me up if you need something built.
+      <strong>backend developer</strong>, 18, self-taught. i build systems and APIs that
+      hold up under real load. open to freelance work when something sounds fun.
     </div>
 
     <div class="section-label fade d3">projects</div>
@@ -480,7 +533,7 @@
         <div class="project-arrow">↗</div>
       </div>
       <div class="project-desc">
-        Multi-region Minecraft Bedrock practice server. Custom plugins, matchmaking, anti-cheat — 15k+ players and counting.
+        Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.
       </div>
     </a>
 
