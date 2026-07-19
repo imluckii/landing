@@ -50,6 +50,7 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
+      min-height: 100dvh;
       display: grid;
       place-items: center;
       padding: 24px 0;
@@ -65,15 +66,36 @@
       color: #f0f0f0;
     }
 
-    /* ── ambient background (soft light, no grid) ── */
+    /* ── no scroll or overscroll bounce when all content fits ── */
+    html.fits,
+    html.fits body {
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    /* when content fits, pin the body to exactly the viewport height and
+       drop the vertical padding, so scrollHeight can never exceed the
+       viewport. grid centering still applies, layout is unchanged */
+    html.fits body {
+      min-height: 0;
+      height: 100vh;
+      height: 100dvh;
+      padding: 0;
+    }
+
+    /* ── ambient background: one smooth linear wash, no stacked layers ──
+       a single gradient cannot seam. it also never fades to fully
+       transparent, so there is no hard cutoff against the body color */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0, 80, 255, 0.07), transparent 70%),
-        radial-gradient(ellipse 50% 35% at 80% 100%, rgba(40, 0, 120, 0.05), transparent 70%),
-        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(0, 100, 200, 0.03), transparent 70%);
+      background: linear-gradient(
+        180deg,
+        rgba(0, 80, 255, 0.07) 0%,
+        rgba(0, 80, 255, 0.02) 55%,
+        rgba(0, 80, 255, 0.04) 100%
+      );
       z-index: -1;
       pointer-events: none;
       opacity: 0;
@@ -84,28 +106,9 @@
     .container {
       width: 100%;
       max-width: 440px;
-      padding: 0 28px;
+      padding: 0 clamp(20px, 6vw, 28px);
       position: relative;
       overflow-x: clip;
-    }
-
-    /* ── soft ambient glow rising behind container ── */
-    .container::after {
-      content: "";
-      position: absolute;
-      top: -60px;
-      left: -40px;
-      right: -40px;
-      bottom: -40px;
-      background: radial-gradient(ellipse 60% 50% at center top, rgba(0, 80, 255, 0.05), transparent 70%);
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0;
-      animation: glowRise 1.8s var(--ease-out) 0.1s forwards;
-    }
-    @keyframes glowRise {
-      from { opacity: 0; transform: translateY(20px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     /* ── staggered entrance (blur clears as elements rise) ── */
@@ -155,7 +158,7 @@
     }
 
     .profile-info h1 {
-      font-size: 22px;
+      font-size: clamp(20px, 5.5vw, 22px);
       font-weight: 600;
       color: #f0f0f0;
       letter-spacing: -0.3px;
@@ -219,22 +222,28 @@
       text-decoration: none;
       color: inherit;
       transition:
-        border-color 0.35s var(--ease-soft),
-        background 0.35s var(--ease-soft),
-        transform 0.35s var(--ease-out),
-        box-shadow 0.35s var(--ease-soft);
+        border-color 0.45s var(--ease-soft),
+        background 0.45s var(--ease-soft),
+        box-shadow 0.45s var(--ease-soft),
+        transform 0.12s var(--ease-out);
     }
 
+    /* hover: the border itself lights up and a faint halo hugs the card,
+       no drop shadow, no lift. one slow, coordinated shift */
     .project-card:hover {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0, 80, 255, 0.06);
+      border-color: rgba(130, 165, 255, 0.22);
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow:
+        0 0 0 1px rgba(130, 165, 255, 0.07),
+        0 0 24px rgba(0, 80, 255, 0.07);
     }
 
+    /* press: quick, grounded, glow tightens with the card */
     .project-card:active {
-      transform: translateY(0) scale(0.985);
+      transform: scale(0.985);
+      box-shadow:
+        0 0 0 1px rgba(130, 165, 255, 0.04),
+        0 0 12px rgba(0, 80, 255, 0.04);
       transition-duration: 0.08s;
     }
 
@@ -245,11 +254,13 @@
       margin-bottom: 6px;
     }
 
+    /* name and desc shift on the same timing so the whole card
+       brightens as one, not in pieces */
     .project-name {
       font-size: 15px;
       font-weight: 500;
       color: #e0e0e0;
-      transition: color 0.3s var(--ease-soft);
+      transition: color 0.35s var(--ease-soft);
     }
 
     .project-card:hover .project-name {
@@ -259,24 +270,154 @@
     .project-arrow {
       font-size: 13px;
       color: #555;
-      transition: transform 0.35s var(--ease-out), color 0.25s var(--ease-soft);
+      transition: transform 0.45s var(--ease-out), color 0.35s var(--ease-soft);
     }
 
+    /* the arrow glides out slowly and deliberately, then snaps back
+       partway on press along with the card */
     .project-card:hover .project-arrow {
-      color: #aaa;
-      transform: translate(2px, -2px);
+      color: #bbb;
+      transform: translate(3px, -3px);
+    }
+
+    .project-card:active .project-arrow {
+      transform: translate(1px, -1px);
+      transition-duration: 0.1s;
     }
 
     .project-desc {
       font-size: 12.5px;
       color: #666;
       line-height: 1.5;
-      transition: color 0.3s var(--ease-soft);
+      transition: color 0.35s var(--ease-soft);
     }
 
     .project-card:hover .project-desc {
-      color: #7d7d7d;
+      color: #8a8a8a;
     }
+
+    /* ── project modal ── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s var(--ease-soft), visibility 0s linear 0.3s;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s var(--ease-soft);
+    }
+
+    .modal {
+      position: relative;
+      width: 64vw;
+      max-width: 620px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: #111113;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 28px 30px;
+      opacity: 0;
+      transform: scale(0.96) translateY(6px);
+      transition: transform 0.38s var(--ease-out), opacity 0.28s var(--ease-soft);
+    }
+
+    .modal-backdrop.open .modal {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: #555;
+      font-size: 16px;
+      line-height: 1;
+      font-family: inherit;
+      cursor: pointer;
+      transition:
+        color 0.35s var(--ease-soft),
+        background 0.45s var(--ease-soft),
+        border-color 0.45s var(--ease-soft),
+        box-shadow 0.45s var(--ease-soft),
+        transform 0.45s var(--ease-out);
+    }
+
+    /* same blue-tinted glow as the project card, so the modal
+       reads as part of the site rather than a bolted-on layer */
+    .modal-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(130, 165, 255, 0.22);
+      box-shadow:
+        0 0 0 1px rgba(130, 165, 255, 0.07),
+        0 0 24px rgba(0, 80, 255, 0.07);
+    }
+
+    .modal-title {
+      font-size: clamp(18px, 4vw, 20px);
+      font-weight: 600;
+      color: #f0f0f0;
+      letter-spacing: -0.3px;
+      padding-right: 36px;
+    }
+
+    .modal-tagline {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .modal-desc {
+      font-size: 13.5px;
+      color: #999;
+      line-height: 1.7;
+      margin: 16px 0 20px;
+    }
+
+    /* the modal stack is a marquee built from the exact same
+       .marquee-wrap / .marquee / .skill classes as the main marquee,
+       so chip styling and hover states are identical. only the wrap
+       spacing differs (no edge bleed inside the modal) */
+    .marquee-wrap.modal-marquee {
+      margin: 0 0 22px;
+      padding: 0;
+    }
+
+    /* pause on hover, matching how the main marquee pauses for tooltips */
+    .modal-marquee:hover .marquee {
+      animation-play-state: paused;
+    }
+
+    .modal-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    /* .modal-links a styling lives in the shared .bottom a rules below,
+       so page links and modal links can never drift apart */
 
     /* ── skills marquee ── */
     .marquee-wrap {
@@ -354,7 +495,7 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
-    /* once visible, position changes animate too — the tooltip glides
+    /* once visible, position changes animate too - the tooltip glides
        between chips instead of jumping */
     .tooltip.show {
       opacity: 1;
@@ -405,14 +546,17 @@
       font-size: 13px;
     }
 
-    .bottom a {
+    /* page links and modal links share these exact rules */
+    .bottom a,
+    .modal-links a {
       position: relative;
       text-decoration: none;
       color: #666;
       transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
     }
 
-    .bottom a::after {
+    .bottom a::after,
+    .modal-links a::after {
       content: "";
       position: absolute;
       left: 0;
@@ -425,12 +569,14 @@
       transition: transform 0.3s var(--ease-out);
     }
 
-    .bottom a:hover {
+    .bottom a:hover,
+    .modal-links a:hover {
       color: #fff;
       transform: translateY(-1px);
     }
 
-    .bottom a:hover::after {
+    .bottom a:hover::after,
+    .modal-links a:hover::after {
       transform: scaleX(1);
     }
 
@@ -473,7 +619,9 @@
     /* ── keyboard focus ── */
     .project-card:focus-visible,
     .bottom a:focus-visible,
-    .contact a:focus-visible {
+    .contact a:focus-visible,
+    .modal-close:focus-visible,
+    .modal-links a:focus-visible {
       outline: 1px solid rgba(255, 255, 255, 0.25);
       outline-offset: 3px;
     }
@@ -483,9 +631,17 @@
       .marquee { animation: scroll 40s linear infinite; }
       .tooltip, .tooltip.show { transition: none; }
       .avatar, .status-dot { animation: none; }
-      body::before, .container::after { animation: none; opacity: 1; }
+      body::before { animation: none; opacity: 1; }
       html { scroll-behavior: auto; }
       * { transition: none !important; }
+    }
+
+    /* modal goes full width on narrow screens and short landscape windows */
+    @media (max-width: 600px), (max-height: 460px) {
+      .modal {
+        width: 100%;
+        max-width: 560px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -496,8 +652,81 @@
         width: 42px;
         height: 42px;
       }
+      .modal {
+        padding: 22px;
+      }
+    }
+
+    /* landscape phones and other height-constrained windows */
+    @media (max-height: 520px) {
+      body {
+        padding: 16px 0;
+      }
+      .about {
+        margin: 18px 0 20px;
+      }
+      .project-card {
+        margin-bottom: 18px;
+      }
+      .marquee-wrap {
+        margin-bottom: 18px;
+      }
+      .contact {
+        margin-top: 20px;
+      }
+      .modal {
+        padding: 20px 22px;
+      }
+      .modal-desc {
+        margin: 12px 0 14px;
+      }
+      .marquee-wrap.modal-marquee {
+        margin-bottom: 16px;
+      }
+    }
+
+    /* larger touch targets on touch devices */
+    @media (pointer: coarse) {
+      .modal-close {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+      }
+      .skill {
+        padding: 10px 16px;
+      }
+      .bottom a,
+      .contact a {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+    }
+
+    /* ultrawide: let the compact column breathe a little, stay minimal */
+    @media (min-width: 2000px) {
+      .container {
+        max-width: 500px;
+      }
       .profile-info h1 {
-        font-size: 20px;
+        font-size: 24px;
+      }
+      .about {
+        font-size: 14.5px;
+      }
+      .project-name {
+        font-size: 16px;
+      }
+      .project-desc {
+        font-size: 13.5px;
+      }
+      .skill {
+        font-size: 13px;
+      }
+      .bottom {
+        font-size: 14px;
+      }
+      .contact {
+        font-size: 13px;
       }
     }
   </style>
@@ -527,15 +756,20 @@
 
     <div class="section-label fade d3">projects</div>
 
-    <a class="project-card fade d3" href="https://lurec.net" target="_blank" rel="noopener noreferrer" aria-label="Lurec Network — Minecraft Bedrock practice server">
-      <div class="project-top">
-        <div class="project-name">Lurec Network</div>
-        <div class="project-arrow">↗</div>
-      </div>
-      <div class="project-desc">
-        Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.
-      </div>
-    </a>
+    <div id="projects">
+      <!-- cards are generated from PROJECTS below; without JS this static card remains -->
+      <noscript>
+        <a class="project-card" href="https://lurec.net" target="_blank" rel="noopener noreferrer" aria-label="Lurec Network, multi-region Minecraft Bedrock practice server">
+          <div class="project-top">
+            <div class="project-name">Lurec Network</div>
+            <div class="project-arrow">↗</div>
+          </div>
+          <div class="project-desc">
+            Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.
+          </div>
+        </a>
+      </noscript>
+    </div>
 
     <div class="section-label fade d4">stack</div>
 
@@ -568,7 +802,7 @@
     </div>
 
     <div class="contact fade d6">
-      need something built? <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord</a> or <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x</a>
+      available for freelance backend work. hit me up on <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord</a> or <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x</a>
     </div>
 
   </div>
@@ -579,7 +813,144 @@
     <div class="tooltip-desc" id="tooltip-desc"></div>
   </div>
 
+  <!-- project modal -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close project details">&times;</button>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-tagline" id="modal-tagline"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="marquee-wrap modal-marquee">
+        <div class="marquee" id="modal-stack"></div>
+      </div>
+      <div class="section-label">resources</div>
+      <div class="modal-links" id="modal-links"></div>
+    </div>
+  </div>
+
   <script>
+    const PROJECTS = [
+      {
+        id: 'lurec',
+        name: 'Lurec Network',
+        tagline: 'Multi-region Minecraft Bedrock practice server',
+        cardDesc: 'Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.',
+        description: 'A multi-region Minecraft Bedrock practice server. The backend is a fully custom NestJS API written in TypeScript, backed by PostgreSQL with Prisma handling data access, and the game layer runs PocketMine plugins in PHP. Built from scratch to serve 15k+ concurrent players across regions.',
+        stack: ['TypeScript', 'NestJS', 'PostgreSQL', 'Prisma', 'PHP', 'PocketMine-MP', 'JavaScript', 'Docker', 'Linux'],
+        links: [
+          { label: 'lurec.net', url: 'https://lurec.net' },
+        ],
+      },
+      // add more projects here
+    ];
+
+    /* ── project cards + modal ── */
+    (function () {
+      var list = document.getElementById('projects');
+      var backdrop = document.getElementById('modal-backdrop');
+      var closeBtn = document.getElementById('modal-close');
+      var titleEl = document.getElementById('modal-title');
+      var taglineEl = document.getElementById('modal-tagline');
+      var descEl = document.getElementById('modal-desc');
+      var stackEl = document.getElementById('modal-stack');
+      var linksEl = document.getElementById('modal-links');
+      var lastTrigger = null;
+
+      function openModal(project, trigger) {
+        titleEl.textContent = project.name;
+        taglineEl.textContent = project.tagline;
+        descEl.textContent = project.description;
+
+        stackEl.innerHTML = '';
+        // duplicate the stack so the marquee loops seamlessly,
+        // same technique as the main skills marquee
+        project.stack.concat(project.stack).forEach(function (tech) {
+          var badge = document.createElement('span');
+          badge.className = 'skill';
+          badge.textContent = tech;
+          stackEl.appendChild(badge);
+        });
+
+        linksEl.innerHTML = '';
+        project.links.forEach(function (link) {
+          var a = document.createElement('a');
+          a.href = link.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = link.label + ' ↗';
+          linksEl.appendChild(a);
+        });
+
+        lastTrigger = trigger || null;
+        backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+      }
+
+      function closeModal() {
+        if (!backdrop.classList.contains('open')) return;
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+        if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+      }
+
+      // build the cards from PROJECTS so adding one later is a one-object change
+      PROJECTS.forEach(function (project) {
+        var primary = project.links[0];
+
+        var card = document.createElement('a');
+        card.className = 'project-card fade d3';
+        card.href = primary ? primary.url : '#';
+        if (primary) {
+          card.target = '_blank';
+          card.rel = 'noopener noreferrer';
+        }
+        card.setAttribute('aria-label', project.name + ', ' + project.tagline);
+
+        var top = document.createElement('div');
+        top.className = 'project-top';
+
+        var name = document.createElement('div');
+        name.className = 'project-name';
+        name.textContent = project.name;
+
+        var arrow = document.createElement('div');
+        arrow.className = 'project-arrow';
+        arrow.textContent = '↗';
+
+        top.appendChild(name);
+        top.appendChild(arrow);
+
+        var desc = document.createElement('div');
+        desc.className = 'project-desc';
+        desc.textContent = project.cardDesc;
+
+        card.appendChild(top);
+        card.appendChild(desc);
+
+        // JS intercepts plain clicks and opens the modal instead of navigating;
+        // ctrl/cmd/middle clicks still open the link in a new tab
+        card.addEventListener('click', function (e) {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+          e.preventDefault();
+          openModal(project, card);
+        });
+
+        list.appendChild(card);
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+
+      backdrop.addEventListener('click', function (e) {
+        if (e.target === backdrop) closeModal();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+      });
+    })();
+
+    /* ── skills tooltip ── */
     (function () {
       var tooltip = document.getElementById('tooltip');
       var titleEl = document.getElementById('tooltip-title');
@@ -611,7 +982,7 @@
         var tipWidth = Math.min(240, window.innerWidth - 16);
         tooltip.style.width = tipWidth + 'px';
 
-        // measure height — works because tooltip is rendered (just transparent),
+        // measure height - works because tooltip is rendered (just transparent),
         // no need for visibility hacks that cause flicker
         var tipHeight = tooltip.offsetHeight;
 
@@ -673,7 +1044,7 @@
         if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
       }
 
-      document.querySelectorAll('.skill').forEach(function (skill) {
+      document.querySelectorAll('.marquee .skill').forEach(function (skill) {
         // desktop: hover
         skill.addEventListener('mouseenter', function () {
           if (isTouch) return;
@@ -707,6 +1078,37 @@
 
       // dismiss on scroll
       window.addEventListener('scroll', hideTip, { passive: true });
+    })();
+
+    /* ── lock scroll when all content fits in the viewport ── */
+    (function () {
+      var ticking = false;
+
+      function checkFit() {
+        ticking = false;
+        // +2 tolerance for subpixel rounding across browsers
+        var fits = document.documentElement.scrollHeight <= window.innerHeight + 2;
+        document.documentElement.classList.toggle('fits', fits);
+      }
+
+      function requestCheck() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(checkFit);
+      }
+
+      window.addEventListener('resize', requestCheck);
+      window.addEventListener('load', checkFit);
+      checkFit();
+      // entrance animations can briefly extend scrollable overflow,
+      // re-check once they have settled
+      setTimeout(checkFit, 1500);
+      // web fonts change document height after load - re-check when they arrive
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(checkFit);
+      }
+      // safety net: some browsers fire font load async even after fonts.ready
+      setTimeout(checkFit, 3000);
     })();
   </script>
 </body>
