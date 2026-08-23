@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>imlucky</title>
-  <meta name="description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work." />
-  <meta name="author" content="imlucky" />
-  <meta name="theme-color" content="#0a0a0b" />
+  <meta name="description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work.">
+  <meta name="author" content="imlucky">
+  <meta name="theme-color" content="#0a0a0b">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="imlucky" />
-  <meta property="og:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work." />
-  <meta property="og:type" content="profile" />
-  <meta property="og:image" content="https://avatars.githubusercontent.com/u/167329163?v=4" />
+  <meta property="og:title" content="imlucky">
+  <meta property="og:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work.">
+  <meta property="og:type" content="profile">
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/167329163?v=4">
 
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="imlucky" />
-  <meta name="twitter:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work." />
-  <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/167329163?v=4" />
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="imlucky">
+  <meta name="twitter:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work.">
+  <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/167329163?v=4">
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0b'/><text x='50' y='72' font-size='62' text-anchor='middle' fill='%23f0f0f0' font-family='sans-serif' font-weight='600'>i</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0b'/><text x='50' y='72' font-size='62' text-anchor='middle' fill='%23f0f0f0' font-family='sans-serif' font-weight='600'>i</text></svg>">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+      color-scheme: dark;
     }
 
     * {
@@ -41,6 +42,7 @@
     html {
       scroll-behavior: smooth;
       overflow-x: hidden;
+      overscroll-behavior-y: none;
     }
 
     body {
@@ -53,7 +55,7 @@
       min-height: 100dvh;
       display: grid;
       place-items: center;
-      padding: 24px 0;
+      padding: clamp(28px, 6vh, 56px) 0;
       overflow-x: hidden;
     }
 
@@ -66,67 +68,54 @@
       color: #f0f0f0;
     }
 
-    /* ── no scroll or overscroll bounce when all content fits ── */
-    html.fits,
-    html.fits body {
+    html.modal-open,
+    html.modal-open body {
       overflow: hidden;
-      overscroll-behavior: none;
     }
 
-    /* when content fits, pin the body to exactly the viewport height and
-       drop the vertical padding, so scrollHeight can never exceed the
-       viewport. grid centering still applies, layout is unchanged */
-    html.fits body {
-      min-height: 0;
-      height: 100vh;
-      height: 100dvh;
-      padding: 0;
+    html.modal-open body {
+      padding-right: var(--scrollbar-width, 0px);
     }
 
-    /* ── ambient background: one smooth linear wash, no stacked layers ──
-       a single gradient cannot seam. it also never fades to fully
-       transparent, so there is no hard cutoff against the body color */
+    /* ── ambient background ── */
     body::before {
       content: "";
       position: fixed;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(0, 80, 255, 0.07) 0%,
-        rgba(0, 80, 255, 0.02) 55%,
-        rgba(0, 80, 255, 0.04) 100%
-      );
+      inset: -10%;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(0, 80, 255, 0.085), transparent 40%),
+        linear-gradient(180deg, rgba(0, 80, 255, 0.025), rgba(0, 80, 255, 0.045));
       z-index: -1;
       pointer-events: none;
       opacity: 0;
-      animation: bgFadeIn 1.6s ease forwards;
+      transform: scale(1.04);
+      animation: bgFadeIn 1.4s var(--ease-soft) forwards;
     }
-    @keyframes bgFadeIn { to { opacity: 1; } }
+    @keyframes bgFadeIn {
+      to { opacity: 1; transform: scale(1); }
+    }
 
     .container {
-      width: 100%;
-      max-width: 440px;
+      width: min(440px, 100vw);
       padding: 0 clamp(20px, 6vw, 28px);
       position: relative;
-      overflow-x: clip;
     }
 
-    /* ── staggered entrance (blur clears as elements rise) ── */
+    /* ── staggered entrance ── */
     .fade {
       opacity: 0;
-      transform: translateY(12px);
-      filter: blur(6px);
-      animation: reveal 0.9s var(--ease-out) forwards;
+      transform: translate3d(0, 14px, 0) scale(0.99);
+      animation: reveal 0.8s var(--ease-out) forwards;
     }
     @keyframes reveal {
-      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
     }
-    .d1 { animation-delay: 0.06s; }
-    .d2 { animation-delay: 0.14s; }
-    .d3 { animation-delay: 0.22s; }
-    .d4 { animation-delay: 0.30s; }
-    .d5 { animation-delay: 0.38s; }
-    .d6 { animation-delay: 0.46s; }
+    .d1 { animation-delay: 0.04s; }
+    .d2 { animation-delay: 0.11s; }
+    .d3 { animation-delay: 0.18s; }
+    .d4 { animation-delay: 0.25s; }
+    .d5 { animation-delay: 0.32s; }
+    .d6 { animation-delay: 0.39s; }
 
     /* ── profile header ── */
     .profile {
@@ -144,12 +133,7 @@
       border: 2px solid rgba(255, 255, 255, 0.08);
       flex-shrink: 0;
       animation: avatarBreath 4s ease-in-out 1.2s infinite;
-      transition: transform 0.4s var(--ease-out), border-color 0.3s var(--ease-soft);
-    }
-
-    .avatar:hover {
-      transform: scale(1.05);
-      border-color: rgba(255, 255, 255, 0.16);
+      transition: transform 0.5s var(--ease-out), border-color 0.35s var(--ease-soft);
     }
 
     @keyframes avatarBreath {
@@ -214,6 +198,8 @@
     /* ── project card ── */
     .project-card {
       display: block;
+      position: relative;
+      overflow: hidden;
       background: rgba(255, 255, 255, 0.025);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 10px;
@@ -221,30 +207,31 @@
       margin-bottom: 28px;
       text-decoration: none;
       color: inherit;
+      cursor: pointer;
+      transform: translate3d(0, 0, 0);
       transition:
-        border-color 0.45s var(--ease-soft),
-        background 0.45s var(--ease-soft),
-        box-shadow 0.45s var(--ease-soft),
-        transform 0.12s var(--ease-out);
+        border-color 0.4s var(--ease-soft),
+        background 0.4s var(--ease-soft),
+        box-shadow 0.4s var(--ease-soft),
+        transform 0.4s var(--ease-out);
     }
 
-    /* hover: the border itself lights up and a faint halo hugs the card,
-       no drop shadow, no lift. one slow, coordinated shift */
-    .project-card:hover {
-      border-color: rgba(130, 165, 255, 0.22);
-      background: rgba(255, 255, 255, 0.035);
-      box-shadow:
-        0 0 0 1px rgba(130, 165, 255, 0.07),
-        0 0 24px rgba(0, 80, 255, 0.07);
+    .project-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, rgba(130, 165, 255, 0.05), transparent 42%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-soft);
     }
 
-    /* press: quick, grounded, glow tightens with the card */
     .project-card:active {
-      transform: scale(0.985);
+      transform: translate3d(0, 0, 0) scale(0.985);
       box-shadow:
         0 0 0 1px rgba(130, 165, 255, 0.04),
         0 0 12px rgba(0, 80, 255, 0.04);
-      transition-duration: 0.08s;
+      transition-duration: 0.1s;
     }
 
     .project-top {
@@ -263,21 +250,10 @@
       transition: color 0.35s var(--ease-soft);
     }
 
-    .project-card:hover .project-name {
-      color: #fff;
-    }
-
     .project-arrow {
       font-size: 13px;
       color: #555;
       transition: transform 0.45s var(--ease-out), color 0.35s var(--ease-soft);
-    }
-
-    /* the arrow glides out slowly and deliberately, then snaps back
-       partway on press along with the card */
-    .project-card:hover .project-arrow {
-      color: #bbb;
-      transform: translate(3px, -3px);
     }
 
     .project-card:active .project-arrow {
@@ -292,10 +268,6 @@
       transition: color 0.35s var(--ease-soft);
     }
 
-    .project-card:hover .project-desc {
-      color: #8a8a8a;
-    }
-
     /* ── project modal ── */
     .modal-backdrop {
       position: fixed;
@@ -304,39 +276,45 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
       background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s var(--ease-soft), visibility 0s linear 0.3s;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      transition: opacity 0.28s var(--ease-soft), visibility 0s linear 0.28s;
     }
 
     .modal-backdrop.open {
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.3s var(--ease-soft);
+      transition: opacity 0.28s var(--ease-soft);
     }
 
     .modal {
       position: relative;
-      width: 64vw;
+      width: min(620px, 100%);
       max-width: 620px;
       max-height: calc(100vh - 40px);
+      max-height: calc(100dvh - 40px);
       overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
       background: #111113;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
       padding: 28px 30px;
       opacity: 0;
-      transform: scale(0.96) translateY(6px);
-      transition: transform 0.38s var(--ease-out), opacity 0.28s var(--ease-soft);
+      transform: translate3d(0, 12px, 0) scale(0.975);
+      transition: transform 0.42s var(--ease-out), opacity 0.28s var(--ease-soft);
     }
 
     .modal-backdrop.open .modal {
       opacity: 1;
-      transform: scale(1) translateY(0);
+      transform: translate3d(0, 0, 0) scale(1);
     }
 
     .modal-close {
@@ -361,17 +339,6 @@
         border-color 0.45s var(--ease-soft),
         box-shadow 0.45s var(--ease-soft),
         transform 0.45s var(--ease-out);
-    }
-
-    /* same blue-tinted glow as the project card, so the modal
-       reads as part of the site rather than a bolted-on layer */
-    .modal-close:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.035);
-      border-color: rgba(130, 165, 255, 0.22);
-      box-shadow:
-        0 0 0 1px rgba(130, 165, 255, 0.07),
-        0 0 24px rgba(0, 80, 255, 0.07);
     }
 
     .modal-title {
@@ -404,11 +371,6 @@
       padding: 0;
     }
 
-    /* pause on hover, matching how the main marquee pauses for tooltips */
-    .modal-marquee:hover .marquee {
-      animation-play-state: paused;
-    }
-
     .modal-links {
       display: flex;
       flex-wrap: wrap;
@@ -430,18 +392,19 @@
       padding-right: 16px;
       mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
       -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      contain: paint;
     }
 
     .marquee {
       display: flex;
       width: max-content;
-      animation: scroll 20s linear infinite;
+      animation: scroll var(--marquee-duration, 20s) linear infinite;
       will-change: transform;
     }
 
     @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
     }
 
     .skill {
@@ -464,7 +427,6 @@
       touch-action: manipulation;
     }
 
-    .skill:hover,
     .skill.active {
       color: #fff;
       border-color: rgba(255, 255, 255, 0.15);
@@ -477,6 +439,13 @@
       transition-duration: 0.1s;
     }
 
+    .skill:focus-visible {
+      color: #fff;
+      border-color: rgba(130, 165, 255, 0.35);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 80, 255, 0.18);
+    }
+
     /* ── floating tooltip (JS-driven, outside marquee overflow) ── */
     .tooltip {
       position: fixed;
@@ -485,6 +454,8 @@
       border-radius: 12px;
       padding: 12px 16px;
       max-width: 240px;
+      max-height: calc(100dvh - 16px);
+      overflow: hidden;
       opacity: 0;
       transform: translateY(6px) scale(0.96);
       pointer-events: none;
@@ -542,6 +513,7 @@
     /* ── footer links ── */
     .bottom {
       display: flex;
+      align-items: center;
       gap: 18px;
       font-size: 13px;
     }
@@ -550,6 +522,8 @@
     .bottom a,
     .modal-links a {
       position: relative;
+      display: inline-flex;
+      align-items: center;
       text-decoration: none;
       color: #666;
       transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
@@ -585,13 +559,19 @@
       margin-top: 32px;
       font-size: 12px;
       color: #444;
+      line-height: 1.7;
     }
 
     .contact a {
       position: relative;
+      display: inline-block;
       color: #666;
       text-decoration: none;
       transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
+    }
+
+    .contact-links {
+      white-space: nowrap;
     }
 
     .contact a::after {
@@ -627,8 +607,8 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .fade { animation: none; opacity: 1; transform: none; filter: none; }
-      .marquee { animation: scroll 40s linear infinite; }
+      .fade { animation: none; opacity: 1; transform: none; }
+      .marquee { animation: none; transform: none; }
       .tooltip, .tooltip.show { transition: none; }
       .avatar, .status-dot { animation: none; }
       body::before { animation: none; opacity: 1; }
@@ -636,24 +616,16 @@
       * { transition: none !important; }
     }
 
-    /* modal goes full width on narrow screens and short landscape windows */
-    @media (max-width: 600px), (max-height: 460px) {
-      .modal {
-        width: 100%;
-        max-width: 560px;
-      }
-    }
-
     @media (max-width: 480px) {
       .container {
-        padding: 40px 20px;
+        padding-inline: 20px;
       }
       .avatar {
         width: 42px;
         height: 42px;
       }
       .modal {
-        padding: 22px;
+        padding: 24px 22px;
       }
     }
 
@@ -702,10 +674,56 @@
       }
     }
 
+    @media (hover: hover) and (pointer: fine) {
+      .avatar:hover {
+        transform: scale(1.05);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+      .project-card:hover {
+        border-color: rgba(130, 165, 255, 0.22);
+        background: rgba(255, 255, 255, 0.035);
+        box-shadow:
+          0 0 0 1px rgba(130, 165, 255, 0.07),
+          0 10px 32px rgba(0, 0, 0, 0.16),
+          0 0 24px rgba(0, 80, 255, 0.07);
+        transform: translate3d(0, -2px, 0);
+      }
+      .project-card:hover::before {
+        opacity: 1;
+      }
+      .project-card:hover .project-name {
+        color: #fff;
+      }
+      .project-card:hover .project-arrow {
+        color: #bbb;
+        transform: translate(3px, -3px);
+      }
+      .project-card:hover .project-desc {
+        color: #8a8a8a;
+      }
+      .modal-close:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.035);
+        border-color: rgba(130, 165, 255, 0.22);
+        box-shadow:
+          0 0 0 1px rgba(130, 165, 255, 0.07),
+          0 0 24px rgba(0, 80, 255, 0.07);
+      }
+      .skill:hover {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.06);
+        transform: translateY(-2px);
+      }
+      .modal-marquee:hover .marquee {
+        animation-play-state: paused;
+      }
+    }
+
     /* ultrawide: let the compact column breathe a little, stay minimal */
     @media (min-width: 2000px) {
       .container {
-        max-width: 500px;
+        width: min(500px, 100vw);
       }
       .profile-info h1 {
         font-size: 24px;
@@ -732,18 +750,21 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
 
     <div class="profile fade d1">
       <img
         class="avatar"
         src="https://avatars.githubusercontent.com/u/167329163?v=4"
         alt="imlucky"
-      />
+        width="48"
+        height="48"
+        decoding="async"
+      >
       <div class="profile-info">
         <h1>imlucky</h1>
         <div class="status">
-          <span class="status-dot"></span>
+          <span class="status-dot" aria-hidden="true"></span>
           available for work
         </div>
       </div>
@@ -802,22 +823,22 @@
     </div>
 
     <div class="contact fade d6">
-      available for freelance backend work. hit me up on <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord</a> or <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x</a>
+      available for freelance backend work. hit me up on <span class="contact-links"><a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord</a> or <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x</a></span>
     </div>
 
-  </div>
+  </main>
 
   <!-- floating tooltip (outside marquee overflow context) -->
-  <div class="tooltip" id="tooltip">
+  <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true">
     <div class="tooltip-title" id="tooltip-title"></div>
     <div class="tooltip-desc" id="tooltip-desc"></div>
   </div>
 
   <!-- project modal -->
-  <div class="modal-backdrop" id="modal-backdrop">
-    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button class="modal-close" id="modal-close" aria-label="Close project details">&times;</button>
-      <h2 class="modal-title" id="modal-title"></h2>
+  <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" inert>
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <button class="modal-close" id="modal-close" type="button" aria-label="Close project details">&times;</button>
+      <h2 class="modal-title" id="modal-title">Project details</h2>
       <div class="modal-tagline" id="modal-tagline"></div>
       <p class="modal-desc" id="modal-desc"></p>
       <div class="marquee-wrap modal-marquee">
@@ -844,10 +865,18 @@
       // add more projects here
     ];
 
+    function setMarqueeSpeed(marquee) {
+      if (!marquee || !marquee.scrollWidth) return;
+      var distance = marquee.scrollWidth / 2;
+      var duration = Math.max(14, Math.min(32, distance / 34));
+      marquee.style.setProperty('--marquee-duration', duration + 's');
+    }
+
     /* ── project cards + modal ── */
     (function () {
       var list = document.getElementById('projects');
       var backdrop = document.getElementById('modal-backdrop');
+      var modal = document.getElementById('modal');
       var closeBtn = document.getElementById('modal-close');
       var titleEl = document.getElementById('modal-title');
       var taglineEl = document.getElementById('modal-tagline');
@@ -870,6 +899,7 @@
           badge.textContent = tech;
           stackEl.appendChild(badge);
         });
+        setMarqueeSpeed(stackEl);
 
         linksEl.innerHTML = '';
         project.links.forEach(function (link) {
@@ -882,16 +912,31 @@
         });
 
         lastTrigger = trigger || null;
+        if (lastTrigger) lastTrigger.setAttribute('aria-expanded', 'true');
+        backdrop.inert = false;
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px');
+        document.documentElement.classList.add('modal-open');
         backdrop.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        closeBtn.focus();
+        requestAnimationFrame(function () {
+          if (backdrop.classList.contains('open')) {
+            closeBtn.focus({ preventScroll: true });
+          }
+        });
       }
 
       function closeModal() {
         if (!backdrop.classList.contains('open')) return;
         backdrop.classList.remove('open');
-        document.body.style.overflow = '';
-        if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+        document.documentElement.classList.remove('modal-open');
+        document.documentElement.style.removeProperty('--scrollbar-width');
+        if (lastTrigger) {
+          lastTrigger.setAttribute('aria-expanded', 'false');
+          lastTrigger.focus({ preventScroll: true });
+          lastTrigger = null;
+        }
+        backdrop.inert = true;
+        backdrop.setAttribute('aria-hidden', 'true');
       }
 
       // build the cards from PROJECTS so adding one later is a one-object change
@@ -906,6 +951,9 @@
           card.rel = 'noopener noreferrer';
         }
         card.setAttribute('aria-label', project.name + ', ' + project.tagline);
+        card.setAttribute('aria-haspopup', 'dialog');
+        card.setAttribute('aria-controls', 'modal');
+        card.setAttribute('aria-expanded', 'false');
 
         var top = document.createElement('div');
         top.className = 'project-top';
@@ -917,6 +965,7 @@
         var arrow = document.createElement('div');
         arrow.className = 'project-arrow';
         arrow.textContent = '↗';
+        arrow.setAttribute('aria-hidden', 'true');
 
         top.appendChild(name);
         top.appendChild(arrow);
@@ -946,7 +995,30 @@
       });
 
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeModal();
+        if (!backdrop.classList.contains('open')) return;
+
+        if (e.key === 'Escape') {
+          closeModal();
+          return;
+        }
+
+        if (e.key !== 'Tab') return;
+        var focusable = modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) {
+          e.preventDefault();
+          modal.focus();
+          return;
+        }
+
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       });
     })();
 
@@ -955,9 +1027,10 @@
       var tooltip = document.getElementById('tooltip');
       var titleEl = document.getElementById('tooltip-title');
       var descEl = document.getElementById('tooltip-desc');
-      var marquee = document.querySelector('.marquee');
+      var marquee = document.querySelector('.container .marquee');
+      var skills = Array.prototype.slice.call(marquee.querySelectorAll('.skill'));
       var currentSkill = null;
-      var isTouch = false;
+      var lastPointerType = 'mouse';
       var hideTimer = null;
 
       function pauseMarquee() {
@@ -966,6 +1039,31 @@
 
       function resumeMarquee() {
         marquee.style.animationPlayState = 'running';
+      }
+
+      function positionTip(skill) {
+        if (!skill || !document.documentElement.contains(skill)) return;
+
+        var tipWidth = Math.min(240, window.innerWidth - 16);
+        tooltip.style.width = tipWidth + 'px';
+        var tipHeight = tooltip.offsetHeight;
+        var rect = skill.getBoundingClientRect();
+        var gap = 12;
+        var spaceAbove = rect.top - 8;
+        var spaceBelow = window.innerHeight - rect.bottom - 8;
+        var showBelow = spaceAbove < tipHeight + gap && spaceBelow > spaceAbove;
+        var left = rect.left + rect.width / 2 - tipWidth / 2;
+        var top = showBelow ? rect.bottom + gap : rect.top - tipHeight - gap;
+
+        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
+        top = Math.max(8, Math.min(top, window.innerHeight - tipHeight - 8));
+        tooltip.classList.toggle('below', showBelow);
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+
+        var skillCenter = rect.left + rect.width / 2;
+        var arrowX = Math.max(20, Math.min(skillCenter - left, tipWidth - 20));
+        tooltip.style.setProperty('--arrow-x', arrowX + 'px');
       }
 
       function showTip(skill) {
@@ -978,43 +1076,9 @@
 
         titleEl.textContent = title;
         descEl.textContent = desc;
-
-        var tipWidth = Math.min(240, window.innerWidth - 16);
-        tooltip.style.width = tipWidth + 'px';
-
-        // measure height - works because tooltip is rendered (just transparent),
-        // no need for visibility hacks that cause flicker
-        var tipHeight = tooltip.offsetHeight;
-
-        var rect = skill.getBoundingClientRect();
-        var gap = 12;
-
-        // position above the skill, centered
-        var left = rect.left + rect.width / 2 - tipWidth / 2;
-        var top = rect.top - tipHeight - gap;
-
-        // clamp to viewport
-        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
-
-        // if not enough space above, show below
-        if (top < 8) {
-          top = rect.bottom + gap;
-          tooltip.classList.add('below');
-        } else {
-          tooltip.classList.remove('below');
-        }
-
-        tooltip.style.left = left + 'px';
-        tooltip.style.top = top + 'px';
-
-        // position arrow so it points at the skill center, not the tooltip center
-        // this matters when clamping shifts the tooltip away from the skill
-        var skillCenter = rect.left + rect.width / 2;
-        var arrowX = skillCenter - left;          // px from tooltip left edge
-        arrowX = Math.max(20, Math.min(arrowX, tipWidth - 20)); // clamp inside tooltip
-        tooltip.style.setProperty('--arrow-x', arrowX + 'px');
-
         pauseMarquee();
+        positionTip(skill);
+        tooltip.setAttribute('aria-hidden', 'false');
 
         // use rAF so position is painted before the show transition triggers
         requestAnimationFrame(function () {
@@ -1030,6 +1094,7 @@
 
       function hideTip() {
         tooltip.classList.remove('show');
+        tooltip.setAttribute('aria-hidden', 'true');
         if (currentSkill) currentSkill.classList.remove('active');
         currentSkill = null;
         resumeMarquee();
@@ -1044,71 +1109,71 @@
         if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
       }
 
-      document.querySelectorAll('.marquee .skill').forEach(function (skill) {
-        // desktop: hover
-        skill.addEventListener('mouseenter', function () {
-          if (isTouch) return;
+      skills.forEach(function (skill, index) {
+        if (index < skills.length / 2) {
+          skill.tabIndex = 0;
+          skill.setAttribute('aria-describedby', 'tooltip');
+        } else {
+          skill.setAttribute('aria-hidden', 'true');
+        }
+
+        skill.addEventListener('pointerenter', function (e) {
+          if (e.pointerType === 'touch') return;
           cancelHide();
           showTip(skill);
         });
-        skill.addEventListener('mouseleave', function () {
-          if (isTouch) return;
+        skill.addEventListener('pointerleave', function (e) {
+          if (e.pointerType === 'touch') return;
           scheduleHide();
         });
 
-        // mobile: tap to show, tap again or tap outside to hide
-        skill.addEventListener('touchstart', function (e) {
-          e.preventDefault();
-          isTouch = true;
+        skill.addEventListener('pointerdown', function (e) {
+          lastPointerType = e.pointerType;
+        });
+        skill.addEventListener('click', function () {
+          if (lastPointerType !== 'touch') return;
           if (currentSkill === skill) {
             hideTip();
           } else {
             showTip(skill);
-            currentSkill = skill;
           }
-        }, { passive: false });
+        });
+
+        skill.addEventListener('focus', function () {
+          cancelHide();
+          showTip(skill);
+        });
+        skill.addEventListener('blur', scheduleHide);
       });
 
-      // dismiss on touch outside
-      document.addEventListener('touchstart', function (e) {
-        if (currentSkill && !currentSkill.contains(e.target)) {
+      document.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch' && currentSkill && !currentSkill.contains(e.target)) {
           hideTip();
         }
       });
 
-      // dismiss on scroll
       window.addEventListener('scroll', hideTip, { passive: true });
+      window.addEventListener('resize', function () {
+        if (currentSkill) positionTip(currentSkill);
+      }, { passive: true });
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) hideTip();
+      });
     })();
 
-    /* ── lock scroll when all content fits in the viewport ── */
+    /* ── keep marquee motion at a consistent pixel speed ── */
     (function () {
-      var ticking = false;
-
-      function checkFit() {
-        ticking = false;
-        // +2 tolerance for subpixel rounding across browsers
-        var fits = document.documentElement.scrollHeight <= window.innerHeight + 2;
-        document.documentElement.classList.toggle('fits', fits);
+      var marquees = document.querySelectorAll('.marquee');
+      function sync() {
+        marquees.forEach(setMarqueeSpeed);
       }
 
-      function requestCheck() {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(checkFit);
-      }
-
-      window.addEventListener('resize', requestCheck);
-      window.addEventListener('load', checkFit);
-      checkFit();
-      // entrance animations can briefly extend scrollable overflow,
-      // re-check once they have settled
-      setTimeout(checkFit, 1500);
-      // web fonts change document height after load - re-check when they arrive
+      window.addEventListener('resize', sync, { passive: true });
+      window.addEventListener('load', sync);
+      sync();
       if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(checkFit);
+        document.fonts.ready.then(sync);
       }
-      // safety net: some browsers fire font load async even after fonts.ready
-      setTimeout(checkFit, 3000);
     })();
   </script>
 </body>
