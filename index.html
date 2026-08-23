@@ -199,9 +199,8 @@
     .project-card {
       display: block;
       position: relative;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: transparent;
+      border: 0;
       border-radius: 10px;
       padding: 16px 18px;
       margin-bottom: 28px;
@@ -210,13 +209,24 @@
       cursor: pointer;
       transform: translate3d(0, 0, 0);
       transition:
-        border-color 0.4s var(--ease-soft),
-        background 0.4s var(--ease-soft),
         box-shadow 0.4s var(--ease-soft),
         transform 0.4s var(--ease-out);
     }
 
-    .project-card::before {
+    .project-surface {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: inherit;
+      pointer-events: none;
+      transition:
+        border-color 0.4s var(--ease-soft),
+        background 0.4s var(--ease-soft);
+    }
+
+    .project-surface::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -228,13 +238,17 @@
 
     .project-card:active {
       transform: translate3d(0, 0, 0) scale(0.985);
-      box-shadow:
-        0 0 0 1px rgba(130, 165, 255, 0.04),
-        0 0 12px rgba(0, 80, 255, 0.04);
       transition-duration: 0.1s;
     }
 
+    .project-card:active .project-surface {
+      box-shadow:
+        0 0 0 1px rgba(130, 165, 255, 0.04),
+        0 0 12px rgba(0, 80, 255, 0.04);
+    }
+
     .project-top {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -262,10 +276,61 @@
     }
 
     .project-desc {
+      position: relative;
       font-size: 12.5px;
       color: #666;
       line-height: 1.5;
       transition: color 0.35s var(--ease-soft);
+    }
+
+    ::view-transition-group(project-surface) {
+      animation-duration: 0.52s;
+      animation-timing-function: var(--ease-out);
+    }
+
+    ::view-transition-old(root) {
+      animation: viewFadeOut 0.18s var(--ease-soft) both;
+    }
+
+    ::view-transition-new(root) {
+      animation: viewFadeIn 0.3s 0.06s var(--ease-soft) both;
+    }
+
+    @keyframes viewFadeOut {
+      to { opacity: 0; }
+    }
+
+    @keyframes viewFadeIn {
+      from { opacity: 0; }
+    }
+
+    ::view-transition-old(project-surface),
+    ::view-transition-new(project-surface) {
+      height: 100%;
+      overflow: clip;
+      mix-blend-mode: normal;
+    }
+
+    ::view-transition-group(modal-content) {
+      z-index: 2;
+      animation-duration: 0.3s;
+      animation-timing-function: var(--ease-soft);
+    }
+
+    ::view-transition-new(modal-content) {
+      animation: viewFadeIn 0.26s 0.08s var(--ease-soft) both;
+    }
+
+    ::view-transition-old(modal-content) {
+      animation: viewFadeOut 0.16s var(--ease-soft) both;
+    }
+
+    html.view-transitioning .modal {
+      transition: none;
+    }
+
+    .transition-source {
+      view-transition-name: none !important;
     }
 
     /* ── project modal ── */
@@ -303,8 +368,9 @@
       overscroll-behavior: contain;
       scrollbar-width: thin;
       scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
-      background: #111113;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      isolation: isolate;
+      background: transparent;
+      border: 0;
       border-radius: 14px;
       padding: 28px 30px;
       opacity: 0;
@@ -315,6 +381,20 @@
     .modal-backdrop.open .modal {
       opacity: 1;
       transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .modal-surface {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: #111113;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .modal-content {
+      display: block;
     }
 
     .modal-close {
@@ -359,7 +439,42 @@
       font-size: 13.5px;
       color: #999;
       line-height: 1.7;
-      margin: 16px 0 20px;
+      margin: 16px 0 18px;
+    }
+
+    .modal-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      list-style: none;
+      margin-bottom: 20px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 9px;
+    }
+
+    .modal-fact {
+      min-width: 0;
+      padding: 11px 12px;
+    }
+
+    .modal-fact + .modal-fact {
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .modal-fact-value {
+      overflow-wrap: anywhere;
+      color: #d8d8d8;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    .modal-fact-label {
+      margin-top: 3px;
+      color: #555;
+      font-size: 10px;
+      line-height: 1.35;
     }
 
     /* the modal stack is a marquee built from the exact same
@@ -557,43 +672,82 @@
     /* ── contact ── */
     .contact {
       margin-top: 32px;
-      font-size: 12px;
-      color: #444;
-      line-height: 1.7;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.022);
+      border: 1px solid rgba(255, 255, 255, 0.055);
+      border-radius: 9px;
+      transition:
+        background 0.35s var(--ease-soft),
+        border-color 0.35s var(--ease-soft),
+        box-shadow 0.35s var(--ease-soft);
     }
 
-    .contact a {
-      position: relative;
-      display: inline-block;
-      color: #666;
-      text-decoration: none;
-      transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
+    .contact-copy {
+      min-width: 0;
     }
 
-    .contact-links {
+    .contact-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #999;
+      font-size: 11.5px;
+      font-weight: 500;
+      line-height: 1.4;
       white-space: nowrap;
     }
 
-    .contact a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -2px;
-      width: 100%;
-      height: 1px;
-      background: #aaa;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s var(--ease-out);
+    .contact-dot {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      background: #23a55a;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(35, 165, 90, 0.25);
     }
 
-    .contact a:hover {
-      color: #ccc;
-      transform: translateY(-1px);
+    .contact-note {
+      margin-top: 2px;
+      color: #4f4f52;
+      font-size: 10.5px;
+      line-height: 1.45;
     }
 
-    .contact a:hover::after {
-      transform: scaleX(1);
+    .contact-actions {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 6px;
+    }
+
+    .contact-action {
+      min-height: 30px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      color: #777;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 500;
+      line-height: 1;
+      text-decoration: none;
+      transition:
+        color 0.25s var(--ease-soft),
+        background 0.25s var(--ease-soft),
+        border-color 0.25s var(--ease-soft),
+        transform 0.3s var(--ease-out);
+    }
+
+    .contact-action-arrow {
+      color: #4f4f52;
+      transition: color 0.25s var(--ease-soft), transform 0.3s var(--ease-out);
     }
 
     /* ── keyboard focus ── */
@@ -626,6 +780,9 @@
       }
       .modal {
         padding: 24px 22px;
+      }
+      .modal-fact {
+        padding: 10px 9px;
       }
     }
 
@@ -668,7 +825,7 @@
         padding: 10px 16px;
       }
       .bottom a,
-      .contact a {
+      .contact-action {
         padding-top: 8px;
         padding-bottom: 8px;
       }
@@ -680,15 +837,17 @@
         border-color: rgba(255, 255, 255, 0.16);
       }
       .project-card:hover {
-        border-color: rgba(130, 165, 255, 0.22);
-        background: rgba(255, 255, 255, 0.035);
         box-shadow:
           0 0 0 1px rgba(130, 165, 255, 0.07),
           0 10px 32px rgba(0, 0, 0, 0.16),
           0 0 24px rgba(0, 80, 255, 0.07);
         transform: translate3d(0, -2px, 0);
       }
-      .project-card:hover::before {
+      .project-card:hover .project-surface {
+        border-color: rgba(130, 165, 255, 0.22);
+        background: rgba(255, 255, 255, 0.035);
+      }
+      .project-card:hover .project-surface::before {
         opacity: 1;
       }
       .project-card:hover .project-name {
@@ -717,6 +876,34 @@
       }
       .modal-marquee:hover .marquee {
         animation-play-state: paused;
+      }
+      .contact:hover {
+        background: rgba(255, 255, 255, 0.028);
+        border-color: rgba(130, 165, 255, 0.13);
+        box-shadow: 0 0 20px rgba(0, 80, 255, 0.035);
+      }
+      .contact-action:hover {
+        color: #ddd;
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(130, 165, 255, 0.18);
+        transform: translateY(-1px);
+      }
+      .contact-action:hover .contact-action-arrow {
+        color: #aaa;
+        transform: translate(1px, -1px);
+      }
+    }
+
+    @media (max-width: 350px) {
+      .contact {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .contact-actions {
+        width: 100%;
+      }
+      .contact-action {
+        flex: 1;
       }
     }
 
@@ -781,6 +968,7 @@
       <!-- cards are generated from PROJECTS below; without JS this static card remains -->
       <noscript>
         <a class="project-card" href="https://lurec.net" target="_blank" rel="noopener noreferrer" aria-label="Lurec Network, multi-region Minecraft Bedrock practice server">
+          <span class="project-surface" aria-hidden="true"></span>
           <div class="project-top">
             <div class="project-name">Lurec Network</div>
             <div class="project-arrow">↗</div>
@@ -823,7 +1011,21 @@
     </div>
 
     <div class="contact fade d6">
-      available for freelance backend work. hit me up on <span class="contact-links"><a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord</a> or <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x</a></span>
+      <div class="contact-copy">
+        <div class="contact-title">
+          <span class="contact-dot" aria-hidden="true"></span>
+          available for backend work
+        </div>
+        <div class="contact-note">have something interesting to build?</div>
+      </div>
+      <div class="contact-actions">
+        <a class="contact-action" href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">
+          discord <span class="contact-action-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-action" href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">
+          x <span class="contact-action-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
     </div>
 
   </main>
@@ -837,15 +1039,19 @@
   <!-- project modal -->
   <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" inert>
     <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
-      <button class="modal-close" id="modal-close" type="button" aria-label="Close project details">&times;</button>
-      <h2 class="modal-title" id="modal-title">Project details</h2>
-      <div class="modal-tagline" id="modal-tagline"></div>
-      <p class="modal-desc" id="modal-desc"></p>
-      <div class="marquee-wrap modal-marquee">
-        <div class="marquee" id="modal-stack"></div>
+      <div class="modal-surface" id="modal-surface" aria-hidden="true"></div>
+      <div class="modal-content" id="modal-content">
+        <button class="modal-close" id="modal-close" type="button" aria-label="Close project details">&times;</button>
+        <h2 class="modal-title" id="modal-title">Project details</h2>
+        <div class="modal-tagline" id="modal-tagline"></div>
+        <p class="modal-desc" id="modal-desc"></p>
+        <ul class="modal-facts" id="modal-facts" aria-label="Project facts"></ul>
+        <div class="marquee-wrap modal-marquee">
+          <div class="marquee" id="modal-stack"></div>
+        </div>
+        <div class="section-label">resources</div>
+        <div class="modal-links" id="modal-links"></div>
       </div>
-      <div class="section-label">resources</div>
-      <div class="modal-links" id="modal-links"></div>
     </div>
   </div>
 
@@ -857,6 +1063,11 @@
         tagline: 'Multi-region Minecraft Bedrock practice server',
         cardDesc: 'Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.',
         description: 'A multi-region Minecraft Bedrock practice server. The backend is a fully custom NestJS API written in TypeScript, backed by PostgreSQL with Prisma handling data access, and the game layer runs PocketMine plugins in PHP. Built from scratch to serve 15k+ concurrent players across regions.',
+        facts: [
+          { value: '15k+', label: 'players' },
+          { value: 'Multi-region', label: 'deployment' },
+          { value: 'Custom', label: 'backend stack' },
+        ],
         stack: ['TypeScript', 'NestJS', 'PostgreSQL', 'Prisma', 'PHP', 'PocketMine-MP', 'JavaScript', 'Docker', 'Linux'],
         links: [
           { label: 'lurec.net', url: 'https://lurec.net' },
@@ -877,18 +1088,117 @@
       var list = document.getElementById('projects');
       var backdrop = document.getElementById('modal-backdrop');
       var modal = document.getElementById('modal');
+      var modalSurface = document.getElementById('modal-surface');
+      var modalContent = document.getElementById('modal-content');
       var closeBtn = document.getElementById('modal-close');
       var titleEl = document.getElementById('modal-title');
       var taglineEl = document.getElementById('modal-tagline');
       var descEl = document.getElementById('modal-desc');
+      var factsEl = document.getElementById('modal-facts');
       var stackEl = document.getElementById('modal-stack');
       var linksEl = document.getElementById('modal-links');
       var lastTrigger = null;
+      var activeTransition = null;
+      var closeQueued = false;
+
+      function canMorph() {
+        return typeof document.startViewTransition === 'function'
+          && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      }
+
+      function transitionBetween(source, destination, contentDirection, update) {
+        if (!canMorph()) {
+          update();
+          return;
+        }
+
+        source.style.viewTransitionName = 'project-surface';
+        if (contentDirection === 'out') {
+          modalContent.style.viewTransitionName = 'modal-content';
+        }
+        document.documentElement.classList.add('view-transitioning');
+
+        activeTransition = document.startViewTransition(function () {
+          source.classList.add('transition-source');
+          destination.style.viewTransitionName = 'project-surface';
+          if (contentDirection === 'in') {
+            modalContent.style.viewTransitionName = 'modal-content';
+          } else {
+            modalContent.classList.add('transition-source');
+          }
+          update();
+        });
+
+        function cleanUp() {
+          source.classList.remove('transition-source');
+          source.style.removeProperty('view-transition-name');
+          destination.style.removeProperty('view-transition-name');
+          modalContent.classList.remove('transition-source');
+          modalContent.style.removeProperty('view-transition-name');
+          document.documentElement.classList.remove('view-transitioning');
+          activeTransition = null;
+
+          if (closeQueued) {
+            closeQueued = false;
+            closeModal();
+          }
+        }
+
+        activeTransition.finished.then(cleanUp, cleanUp);
+      }
+
+      function showModal(trigger) {
+        lastTrigger = trigger || null;
+        if (lastTrigger) lastTrigger.setAttribute('aria-expanded', 'true');
+        backdrop.inert = false;
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px');
+        document.documentElement.classList.add('modal-open');
+        backdrop.classList.add('open');
+        requestAnimationFrame(function () {
+          if (backdrop.classList.contains('open')) {
+            closeBtn.focus({ preventScroll: true });
+          }
+        });
+      }
+
+      function hideModal(trigger) {
+        backdrop.classList.remove('open');
+        document.documentElement.classList.remove('modal-open');
+        document.documentElement.style.removeProperty('--scrollbar-width');
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.focus({ preventScroll: true });
+        }
+        backdrop.inert = true;
+        backdrop.setAttribute('aria-hidden', 'true');
+        lastTrigger = null;
+      }
 
       function openModal(project, trigger) {
+        if (backdrop.classList.contains('open') || activeTransition) return;
+
         titleEl.textContent = project.name;
         taglineEl.textContent = project.tagline;
         descEl.textContent = project.description;
+
+        factsEl.innerHTML = '';
+        project.facts.forEach(function (fact) {
+          var item = document.createElement('li');
+          item.className = 'modal-fact';
+
+          var value = document.createElement('div');
+          value.className = 'modal-fact-value';
+          value.textContent = fact.value;
+
+          var label = document.createElement('div');
+          label.className = 'modal-fact-label';
+          label.textContent = fact.label;
+
+          item.appendChild(value);
+          item.appendChild(label);
+          factsEl.appendChild(item);
+        });
 
         stackEl.innerHTML = '';
         // duplicate the stack so the marquee loops seamlessly,
@@ -911,32 +1221,27 @@
           linksEl.appendChild(a);
         });
 
-        lastTrigger = trigger || null;
-        if (lastTrigger) lastTrigger.setAttribute('aria-expanded', 'true');
-        backdrop.inert = false;
-        backdrop.setAttribute('aria-hidden', 'false');
-        document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px');
-        document.documentElement.classList.add('modal-open');
-        backdrop.classList.add('open');
-        requestAnimationFrame(function () {
-          if (backdrop.classList.contains('open')) {
-            closeBtn.focus({ preventScroll: true });
-          }
+        transitionBetween(trigger.querySelector('.project-surface'), modalSurface, 'in', function () {
+          showModal(trigger);
         });
       }
 
       function closeModal() {
-        if (!backdrop.classList.contains('open')) return;
-        backdrop.classList.remove('open');
-        document.documentElement.classList.remove('modal-open');
-        document.documentElement.style.removeProperty('--scrollbar-width');
-        if (lastTrigger) {
-          lastTrigger.setAttribute('aria-expanded', 'false');
-          lastTrigger.focus({ preventScroll: true });
-          lastTrigger = null;
+        if (activeTransition) {
+          closeQueued = true;
+          return;
         }
-        backdrop.inert = true;
-        backdrop.setAttribute('aria-hidden', 'true');
+
+        if (!backdrop.classList.contains('open')) return;
+
+        var trigger = lastTrigger;
+        if (!trigger) {
+          hideModal(null);
+          return;
+        }
+        transitionBetween(modalSurface, trigger.querySelector('.project-surface'), 'out', function () {
+          hideModal(trigger);
+        });
       }
 
       // build the cards from PROJECTS so adding one later is a one-object change
@@ -954,6 +1259,10 @@
         card.setAttribute('aria-haspopup', 'dialog');
         card.setAttribute('aria-controls', 'modal');
         card.setAttribute('aria-expanded', 'false');
+
+        var surface = document.createElement('span');
+        surface.className = 'project-surface';
+        surface.setAttribute('aria-hidden', 'true');
 
         var top = document.createElement('div');
         top.className = 'project-top';
@@ -974,6 +1283,7 @@
         desc.className = 'project-desc';
         desc.textContent = project.cardDesc;
 
+        card.appendChild(surface);
         card.appendChild(top);
         card.appendChild(desc);
 
@@ -995,13 +1305,12 @@
       });
 
       document.addEventListener('keydown', function (e) {
-        if (!backdrop.classList.contains('open')) return;
-
         if (e.key === 'Escape') {
-          closeModal();
+          if (backdrop.classList.contains('open') || activeTransition) closeModal();
           return;
         }
 
+        if (!backdrop.classList.contains('open')) return;
         if (e.key !== 'Tab') return;
         var focusable = modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
         if (!focusable.length) {
