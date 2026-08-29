@@ -191,7 +191,7 @@
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      color: #444;
+      color: #4d4d4d;
       margin-bottom: 12px;
     }
 
@@ -230,7 +230,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(115deg, rgba(130, 165, 255, 0.05), transparent 42%);
+      background: linear-gradient(115deg, rgba(255, 255, 255, 0.035), transparent 42%);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.4s var(--ease-soft);
@@ -243,8 +243,8 @@
 
     .project-card:active .project-surface {
       box-shadow:
-        0 0 0 1px rgba(130, 165, 255, 0.04),
-        0 0 12px rgba(0, 80, 255, 0.04);
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 12px rgba(0, 0, 0, 0.2);
     }
 
     .project-top {
@@ -342,9 +342,9 @@
       align-items: center;
       justify-content: center;
       padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       opacity: 0;
       visibility: hidden;
       overflow-y: auto;
@@ -360,8 +360,8 @@
 
     .modal {
       position: relative;
-      width: min(620px, 100%);
-      max-width: 620px;
+      width: min(560px, 100%);
+      max-width: 560px;
       max-height: calc(100vh - 40px);
       max-height: calc(100dvh - 40px);
       overflow-y: auto;
@@ -372,7 +372,7 @@
       background: transparent;
       border: 0;
       border-radius: 14px;
-      padding: 28px 30px;
+      padding: 30px 34px;
       opacity: 0;
       transform: translate3d(0, 12px, 0) scale(0.975);
       transition: transform 0.42s var(--ease-out), opacity 0.28s var(--ease-soft);
@@ -387,9 +387,12 @@
       position: absolute;
       inset: 0;
       z-index: -1;
-      background: #111113;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #131315;
+      border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: inherit;
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.55),
+        0 4px 18px rgba(0, 0, 0, 0.35);
       pointer-events: none;
     }
 
@@ -399,17 +402,17 @@
 
     .modal-close {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 30px;
-      height: 30px;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
       display: grid;
       place-items: center;
       background: transparent;
       border: 1px solid transparent;
-      border-radius: 7px;
-      color: #555;
-      font-size: 16px;
+      border-radius: 8px;
+      color: #888;
+      font-size: 17px;
       line-height: 1;
       font-family: inherit;
       cursor: pointer;
@@ -439,14 +442,14 @@
       font-size: 13.5px;
       color: #999;
       line-height: 1.7;
-      margin: 16px 0 18px;
+      margin: 18px 0 22px;
     }
 
     .modal-facts {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       list-style: none;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       overflow: hidden;
       background: rgba(255, 255, 255, 0.025);
       border: 1px solid rgba(255, 255, 255, 0.06);
@@ -455,7 +458,7 @@
 
     .modal-fact {
       min-width: 0;
-      padding: 11px 12px;
+      padding: 12px 14px;
     }
 
     .modal-fact + .modal-fact {
@@ -464,26 +467,30 @@
 
     .modal-fact-value {
       overflow-wrap: anywhere;
-      color: #d8d8d8;
-      font-size: 12px;
+      color: #e8e8e8;
+      font-size: 12.5px;
       font-weight: 500;
       line-height: 1.3;
     }
 
     .modal-fact-label {
       margin-top: 3px;
-      color: #555;
-      font-size: 10px;
+      color: #666;
+      font-size: 10.5px;
       line-height: 1.35;
     }
 
-    /* the modal stack is a marquee built from the exact same
-       .marquee-wrap / .marquee / .skill classes as the main marquee,
-       so chip styling and hover states are identical. only the wrap
-       spacing differs (no edge bleed inside the modal) */
-    .marquee-wrap.modal-marquee {
+    /* modal stack chips: static wrapped row, same .skill chip styling
+       as the page marquee so they never drift apart */
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
       margin: 0 0 22px;
-      padding: 0;
+    }
+
+    .modal-tags .skill {
+      margin-right: 0;
     }
 
     .modal-links {
@@ -556,9 +563,9 @@
 
     .skill:focus-visible {
       color: #fff;
-      border-color: rgba(130, 165, 255, 0.35);
+      border-color: rgba(255, 255, 255, 0.25);
       outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 80, 255, 0.18);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
     }
 
     /* ── floating tooltip (JS-driven, outside marquee overflow) ── */
@@ -639,8 +646,9 @@
       position: relative;
       display: inline-flex;
       align-items: center;
+      padding: 4px 0;
       text-decoration: none;
-      color: #666;
+      color: #777;
       transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
     }
 
@@ -780,7 +788,7 @@
         height: 42px;
       }
       .modal {
-        padding: 24px 22px;
+        padding: 26px 24px;
       }
       .modal-fact {
         padding: 10px 9px;
@@ -810,9 +818,6 @@
       .modal-desc {
         margin: 12px 0 14px;
       }
-      .marquee-wrap.modal-marquee {
-        margin-bottom: 16px;
-      }
     }
 
     /* larger touch targets on touch devices */
@@ -839,13 +844,12 @@
       }
       .project-card:hover {
         box-shadow:
-          0 0 0 1px rgba(130, 165, 255, 0.07),
-          0 10px 32px rgba(0, 0, 0, 0.16),
-          0 0 24px rgba(0, 80, 255, 0.07);
+          0 0 0 1px rgba(255, 255, 255, 0.06),
+          0 10px 32px rgba(0, 0, 0, 0.2);
         transform: translate3d(0, -2px, 0);
       }
       .project-card:hover .project-surface {
-        border-color: rgba(130, 165, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.16);
         background: rgba(255, 255, 255, 0.035);
       }
       .project-card:hover .project-surface::before {
@@ -863,11 +867,8 @@
       }
       .modal-close:hover {
         color: #fff;
-        background: rgba(255, 255, 255, 0.035);
-        border-color: rgba(130, 165, 255, 0.22);
-        box-shadow:
-          0 0 0 1px rgba(130, 165, 255, 0.07),
-          0 0 24px rgba(0, 80, 255, 0.07);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.18);
       }
       .skill:hover {
         color: #fff;
@@ -875,23 +876,17 @@
         background: rgba(255, 255, 255, 0.06);
         transform: translateY(-2px);
       }
-      .modal-marquee:hover .marquee {
-        animation-play-state: paused;
-      }
       .contact:hover {
         background: rgba(255, 255, 255, 0.028);
-        border-color: rgba(130, 165, 255, 0.13);
-        box-shadow: 0 0 20px rgba(0, 80, 255, 0.035);
+        border-color: rgba(255, 255, 255, 0.11);
       }
       .contact-action:hover {
         color: #fff;
-        background: rgba(0, 80, 255, 0.14);
-        border-color: rgba(130, 165, 255, 0.35);
-        box-shadow: 0 4px 14px rgba(0, 80, 255, 0.14);
-        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(255, 255, 255, 0.2);
       }
       .contact-action:hover .contact-action-arrow {
-        color: #cbd8ff;
+        color: #ddd;
         transform: translate(2px, -2px);
       }
     }
@@ -1048,9 +1043,7 @@
         <div class="modal-tagline" id="modal-tagline"></div>
         <p class="modal-desc" id="modal-desc"></p>
         <ul class="modal-facts" id="modal-facts" aria-label="Project facts"></ul>
-        <div class="marquee-wrap modal-marquee">
-          <div class="marquee" id="modal-stack"></div>
-        </div>
+        <div class="modal-tags" id="modal-stack"></div>
         <div class="section-label">resources</div>
         <div class="modal-links" id="modal-links"></div>
       </div>
@@ -1203,15 +1196,12 @@
         });
 
         stackEl.innerHTML = '';
-        // duplicate the stack so the marquee loops seamlessly,
-        // same technique as the main skills marquee
-        project.stack.concat(project.stack).forEach(function (tech) {
+        project.stack.forEach(function (tech) {
           var badge = document.createElement('span');
           badge.className = 'skill';
           badge.textContent = tech;
           stackEl.appendChild(badge);
         });
-        setMarqueeSpeed(stackEl);
 
         linksEl.innerHTML = '';
         project.links.forEach(function (link) {
