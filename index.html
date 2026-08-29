@@ -188,6 +188,24 @@
       50% { box-shadow: 0 0 14px rgba(35, 165, 90, 0.5); }
     }
 
+    /* quiet hire button */
+    .hire-btn {
+      margin-left: 10px;
+      padding: 1px 10px 2px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft);
+    }
+
+    .hire-btn:hover {
+      color: #fff;
+      border-color: var(--faint);
+    }
+
     /* projects listed like ls output */
     .ls {
       padding-left: 26px;
@@ -540,6 +558,7 @@
 
     /* ── keyboard focus ── */
     .ls-item:focus-visible,
+    .hire-btn:focus-visible,
     .contact a:focus-visible,
     .modal-close:focus-visible,
     .modal-links a:focus-visible {
@@ -598,7 +617,8 @@
       <p><strong>imlucky</strong> — backend developer. 18, self-taught.</p>
       <div class="status">
         <span class="status-dot" aria-hidden="true"></span>
-        available for backend work
+        available for work
+        <a class="hire-btn" href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">hire me</a>
       </div>
     </div>
 
@@ -663,8 +683,8 @@
       {
         id: 'lurec-network',
         name: 'lurec-network',
-        cardDesc: 'multi-region mc bedrock practice server — 15k+ players',
-        description: 'Multi-region Minecraft Bedrock practice server. The backend is a fully custom NestJS API written in TypeScript, backed by PostgreSQL with Prisma handling data access, and the game layer runs PocketMine plugins in PHP. Built from scratch to serve 15k+ concurrent players across regions.',
+        cardDesc: 'multi-region mc bedrock practice server — 15k+ registered players',
+        description: 'Multi-region Minecraft Bedrock practice server. The backend is a fully custom NestJS API written in TypeScript, backed by PostgreSQL with Prisma handling data access, and the game layer runs PocketMine plugins in PHP. Built from scratch to serve 15k+ registered players across regions.',
         links: [
           { label: 'lurec.net', url: 'https://lurec.net' },
         ],
