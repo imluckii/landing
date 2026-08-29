@@ -38,6 +38,13 @@
 
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
+      overscroll-behavior-y: none;
+    }
+
+    html.modal-open body {
+      overflow: hidden;
+      padding-right: var(--scrollbar-width, 0px);
     }
 
     body {
@@ -47,6 +54,7 @@
       font-size: 13px;
       line-height: 1.75;
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       justify-content: center;
       padding: 48px 24px 40px;
@@ -723,6 +731,7 @@
         backdrop.inert = false;
         backdrop.setAttribute('aria-hidden', 'false');
         document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px');
+        document.documentElement.classList.add('modal-open');
         backdrop.classList.add('open');
         requestAnimationFrame(function () {
           closeBtn.focus({ preventScroll: true });
@@ -733,6 +742,7 @@
         if (!backdrop.classList.contains('open')) return;
         backdrop.classList.remove('open');
         backdrop.inert = true;
+        document.documentElement.classList.remove('modal-open');
         backdrop.setAttribute('aria-hidden', 'true');
       }
 
