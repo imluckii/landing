@@ -4,30 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>imlucky</title>
-  <meta name="description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work.">
-  <meta name="author" content="imlucky">
-  <meta name="theme-color" content="#0a0a0b">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="imlucky">
-  <meta property="og:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work.">
-  <meta property="og:type" content="profile">
-  <meta property="og:image" content="https://avatars.githubusercontent.com/u/167329163?v=4">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="imlucky">
-  <meta name="twitter:description" content="Self-taught backend developer. Built and runs Lurec Network at scale. Available for freelance backend work.">
-  <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/167329163?v=4">
-
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0b'/><text x='50' y='72' font-size='62' text-anchor='middle' fill='%23f0f0f0' font-family='sans-serif' font-weight='600'>i</text></svg>">
-
+  <meta name="description" content="imlucky — backend developer. systems and APIs that hold up under real load.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      --bg: #0a0a0b;
+      --fg: #d6d6d8;
+      --dim: #8a8a90;
+      --faint: #55555c;
+      --ghost: #3a3a40;
+      --accent: #23a55a;
+      --line: rgba(255, 255, 255, 0.08);
+      --card: #121214;
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
       --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
       color-scheme: dark;
@@ -41,299 +31,336 @@
 
     html {
       scroll-behavior: smooth;
-      overflow-x: hidden;
-      overscroll-behavior-y: none;
     }
 
     body {
-      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0a0a0b;
-      color: #b0b0b0;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.75;
       min-height: 100vh;
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      padding: clamp(28px, 6vh, 56px) 0;
-      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      padding: 48px 24px 40px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+      background: rgba(35, 165, 90, 0.28);
+      color: #f0f0f0;
     }
 
     a {
       -webkit-tap-highlight-color: transparent;
     }
 
-    ::selection {
-      background: rgba(0, 80, 255, 0.35);
-      color: #f0f0f0;
-    }
-
-    html.modal-open,
-    html.modal-open body {
-      overflow: hidden;
-    }
-
-    html.modal-open body {
-      padding-right: var(--scrollbar-width, 0px);
-    }
-
-    /* ── ambient background ── */
-    body::before {
-      content: "";
+    /* ── 3d layer ── */
+    #hero-3d {
       position: fixed;
-      inset: -10%;
-      background:
-        radial-gradient(circle at 50% 32%, rgba(0, 80, 255, 0.085), transparent 40%),
-        linear-gradient(180deg, rgba(0, 80, 255, 0.025), rgba(0, 80, 255, 0.045));
-      z-index: -1;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
       pointer-events: none;
       opacity: 0;
-      transform: scale(1.04);
-      animation: bgFadeIn 1.4s var(--ease-soft) forwards;
-    }
-    @keyframes bgFadeIn {
-      to { opacity: 1; transform: scale(1); }
+      transition: opacity 1.6s var(--ease-soft);
     }
 
-    .container {
-      width: min(440px, 100vw);
-      padding: 0 clamp(20px, 6vw, 28px);
+    #hero-3d.on {
+      opacity: 1;
+    }
+
+    /* ── terminal window ── */
+    .term {
       position: relative;
+      z-index: 1;
+      width: min(680px, 100%);
     }
 
-    /* ── staggered entrance ── */
-    .fade {
-      opacity: 0;
-      transform: translate3d(0, 14px, 0) scale(0.99);
-      animation: reveal 0.8s var(--ease-out) forwards;
-    }
-    @keyframes reveal {
-      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
-    }
-    .d1 { animation-delay: 0.04s; }
-    .d2 { animation-delay: 0.11s; }
-    .d3 { animation-delay: 0.18s; }
-    .d4 { animation-delay: 0.25s; }
-    .d5 { animation-delay: 0.32s; }
-    .d6 { animation-delay: 0.39s; }
-
-    /* ── profile header ── */
-    .profile {
+    /* title bar */
+    .term-bar {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 8px;
+      gap: 8px;
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+      color: var(--faint);
+      font-size: 11px;
+      letter-spacing: 0.5px;
     }
 
-    .avatar {
-      width: 48px;
-      height: 48px;
+    .term-bar .dot {
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.08);
-      flex-shrink: 0;
-      animation: avatarBreath 4s ease-in-out 1.2s infinite;
-      transition: transform 0.5s var(--ease-out), border-color 0.35s var(--ease-soft);
+      background: var(--ghost);
+      flex: 0 0 auto;
     }
 
-    @keyframes avatarBreath {
-      0%, 100% { box-shadow: 0 0 12px rgba(0, 80, 255, 0.10); }
-      50% { box-shadow: 0 0 22px rgba(0, 80, 255, 0.20); }
+    .term-bar .path {
+      margin-left: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .profile-info h1 {
-      font-size: clamp(20px, 5.5vw, 22px);
-      font-weight: 600;
-      color: #f0f0f0;
-      letter-spacing: -0.3px;
-      line-height: 1.2;
+    .term-bar .ver {
+      margin-left: auto;
+      flex: 0 0 auto;
     }
 
+    /* prompt lines */
+    .cmd {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin: 26px 0 8px;
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    .cmd:first-of-type {
+      margin-top: 0;
+    }
+
+    .prompt {
+      color: var(--accent);
+      font-weight: 500;
+      user-select: none;
+      flex: 0 0 auto;
+    }
+
+    .prompt::after {
+      content: " %";
+      color: var(--ghost);
+    }
+
+    .cmd .arg {
+      color: #b8b8bc;
+    }
+
+    /* output blocks */
+    .out {
+      padding-left: 26px;
+    }
+
+    .out p {
+      color: var(--dim);
+      max-width: 58ch;
+    }
+
+    .out p strong {
+      color: var(--fg);
+      font-weight: 500;
+    }
+
+    /* status line */
     .status {
-      font-size: 12px;
-      color: #555;
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 2px;
+      gap: 8px;
+      color: var(--dim);
+      margin-top: 6px;
     }
 
     .status-dot {
       width: 7px;
       height: 7px;
-      background: #23a55a;
       border-radius: 50%;
-      display: inline-block;
-      animation: dotPulse 2.5s ease-in-out infinite;
-    }
-    @keyframes dotPulse {
-      0% { box-shadow: 0 0 0 0 rgba(35, 165, 90, 0.5); }
-      70% { box-shadow: 0 0 0 5px rgba(35, 165, 90, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(35, 165, 90, 0); }
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(35, 165, 90, 0.4);
+      animation: pulse 3.2s ease-in-out infinite;
+      flex: 0 0 auto;
     }
 
-    /* ── about ── */
-    .about {
-      margin: 28px 0 32px;
-      font-size: 13.5px;
-      color: #777;
-      line-height: 1.7;
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 6px rgba(35, 165, 90, 0.25); }
+      50% { box-shadow: 0 0 14px rgba(35, 165, 90, 0.5); }
     }
 
-    .about strong {
-      color: #aaa;
-      font-weight: 500;
+    /* projects listed like ls output */
+    .ls {
+      padding-left: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    /* ── section label ── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #4d4d4d;
-      margin-bottom: 12px;
-    }
-
-    /* ── project card ── */
-    .project-card {
-      display: block;
-      position: relative;
-      background: transparent;
+    .ls-item {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      background: none;
       border: 0;
-      border-radius: 10px;
-      padding: 16px 18px;
-      margin-bottom: 28px;
-      text-decoration: none;
-      color: inherit;
+      padding: 8px 12px;
+      margin: 0 -12px;
+      border-radius: 8px;
+      font: inherit;
+      font-size: 13px;
+      color: var(--fg);
       cursor: pointer;
-      transform: translate3d(0, 0, 0);
-      transition:
-        box-shadow 0.4s var(--ease-soft),
-        transform 0.4s var(--ease-out);
+      text-decoration: none;
+      transition: background 0.25s var(--ease-soft);
     }
 
-    .project-surface {
-      position: absolute;
-      inset: 0;
+    .ls-item:hover {
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .ls-item:active {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .ls-name {
+      color: #e8e8ea;
+      font-weight: 500;
+      flex: 0 0 auto;
+    }
+
+    .ls-name::after {
+      content: "/";
+      color: var(--faint);
+    }
+
+    .ls-desc {
+      color: var(--dim);
+      font-size: 12px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: inherit;
-      pointer-events: none;
-      transition:
-        border-color 0.4s var(--ease-soft),
-        background 0.4s var(--ease-soft);
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .project-surface::before {
+    .ls-arrow {
+      margin-left: auto;
+      color: var(--ghost);
+      flex: 0 0 auto;
+      transition: color 0.25s var(--ease-soft), transform 0.3s var(--ease-out);
+    }
+
+    .ls-item:hover .ls-arrow {
+      color: var(--dim);
+      transform: translate(2px, -2px);
+    }
+
+    /* stack tokens */
+    .stack {
+      padding-left: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      color: var(--dim);
+    }
+
+    .stack span::before {
+      content: "[";
+      color: var(--ghost);
+    }
+
+    .stack span::after {
+      content: "]";
+      color: var(--ghost);
+    }
+
+    /* contact */
+    .contact {
+      padding-left: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 22px;
+    }
+
+    .contact a {
+      color: var(--dim);
+      text-decoration: none;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 0;
+      transition: color 0.25s var(--ease-soft);
+    }
+
+    .contact a::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(115deg, rgba(255, 255, 255, 0.035), transparent 42%);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s var(--ease-soft);
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s var(--ease-out);
     }
 
-    .project-card:active {
-      transform: translate3d(0, 0, 0) scale(0.985);
-      transition-duration: 0.1s;
+    .contact a:hover {
+      color: #fff;
     }
 
-    .project-card:active .project-surface {
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 0 12px rgba(0, 0, 0, 0.2);
+    .contact a:hover::after {
+      transform: scaleX(1);
     }
 
-    .project-top {
-      position: relative;
+    .contact .arrow {
+      color: var(--ghost);
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .contact a:hover .arrow {
+      transform: translate(2px, -2px);
+    }
+
+    /* blinking cursor on the last prompt */
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: var(--accent);
+      vertical-align: -2px;
+      margin-left: 8px;
+      animation: blink 1.1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* footer */
+    .foot {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      gap: 12px;
+      color: var(--ghost);
+      font-size: 11px;
     }
 
-    /* name and desc shift on the same timing so the whole card
-       brightens as one, not in pieces */
-    .project-name {
-      font-size: 15px;
-      font-weight: 500;
-      color: #e0e0e0;
-      transition: color 0.35s var(--ease-soft);
+    /* ── staggered entrance ── */
+    .fade {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+      animation: reveal 0.7s var(--ease-out) forwards;
     }
 
-    .project-arrow {
-      font-size: 13px;
-      color: #555;
-      transition: transform 0.45s var(--ease-out), color 0.35s var(--ease-soft);
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.16s; }
+    .d3 { animation-delay: 0.27s; }
+    .d4 { animation-delay: 0.38s; }
+    .d5 { animation-delay: 0.49s; }
+    .d6 { animation-delay: 0.6s; }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: none; }
     }
 
-    .project-card:active .project-arrow {
-      transform: translate(1px, -1px);
-      transition-duration: 0.1s;
-    }
-
-    .project-desc {
-      position: relative;
-      font-size: 12.5px;
-      color: #666;
-      line-height: 1.5;
-      transition: color 0.35s var(--ease-soft);
-    }
-
-    ::view-transition-group(project-surface) {
-      animation-duration: 0.52s;
-      animation-timing-function: var(--ease-out);
-    }
-
-    ::view-transition-old(root) {
-      animation: viewFadeOut 0.18s var(--ease-soft) both;
-    }
-
-    ::view-transition-new(root) {
-      animation: viewFadeIn 0.3s 0.06s var(--ease-soft) both;
-    }
-
-    @keyframes viewFadeOut {
-      to { opacity: 0; }
-    }
-
-    @keyframes viewFadeIn {
-      from { opacity: 0; }
-    }
-
-    ::view-transition-old(project-surface),
-    ::view-transition-new(project-surface) {
-      height: 100%;
-      overflow: clip;
-      mix-blend-mode: normal;
-    }
-
-    ::view-transition-group(modal-content) {
-      z-index: 2;
-      animation-duration: 0.3s;
-      animation-timing-function: var(--ease-soft);
-    }
-
-    ::view-transition-new(modal-content) {
-      animation: viewFadeIn 0.26s 0.08s var(--ease-soft) both;
-    }
-
-    ::view-transition-old(modal-content) {
-      animation: viewFadeOut 0.16s var(--ease-soft) both;
-    }
-
-    html.view-transitioning .modal {
-      transition: none;
-    }
-
-    .transition-source {
-      view-transition-name: none !important;
-    }
-
-    /* ── project modal ── */
+    /* ── project panel ── */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -341,729 +368,294 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-      background: rgba(0, 0, 0, 0.72);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      padding: 20px;
+      background: rgba(4, 4, 5, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       opacity: 0;
       visibility: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
-      transition: opacity 0.28s var(--ease-soft), visibility 0s linear 0.28s;
+      transition: opacity 0.25s var(--ease-soft), visibility 0s linear 0.25s;
     }
 
     .modal-backdrop.open {
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.28s var(--ease-soft);
+      transition: opacity 0.25s var(--ease-soft);
     }
 
     .modal {
       position: relative;
-      width: min(560px, 100%);
-      max-width: 560px;
-      max-height: calc(100vh - 40px);
+      width: min(600px, 100%);
       max-height: calc(100dvh - 40px);
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-width: thin;
       scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
-      isolation: isolate;
-      background: transparent;
-      border: 0;
-      border-radius: 14px;
-      padding: 30px 34px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+      padding: 26px 30px 28px;
       opacity: 0;
-      transform: translate3d(0, 12px, 0) scale(0.975);
-      transition: transform 0.42s var(--ease-out), opacity 0.28s var(--ease-soft);
+      transform: translate3d(0, 10px, 0) scale(0.98);
+      transition: transform 0.35s var(--ease-out), opacity 0.25s var(--ease-soft);
     }
 
     .modal-backdrop.open .modal {
       opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
+      transform: none;
     }
 
-    .modal-surface {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background: #131315;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: inherit;
-      box-shadow:
-        0 24px 70px rgba(0, 0, 0, 0.55),
-        0 4px 18px rgba(0, 0, 0, 0.35);
-      pointer-events: none;
+    /* terminal-style title bar inside the panel */
+    .modal-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      color: var(--faint);
+      font-size: 11px;
+      letter-spacing: 0.5px;
     }
 
-    .modal-content {
-      display: block;
+    .modal-bar .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ghost);
+    }
+
+    .modal-bar .name {
+      color: var(--dim);
     }
 
     .modal-close {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 34px;
-      height: 34px;
+      top: 14px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
       background: transparent;
-      border: 1px solid transparent;
+      border: 0;
       border-radius: 8px;
-      color: #888;
-      font-size: 17px;
+      color: var(--dim);
+      font-size: 22px;
       line-height: 1;
       font-family: inherit;
       cursor: pointer;
-      transition:
-        color 0.35s var(--ease-soft),
-        background 0.45s var(--ease-soft),
-        border-color 0.45s var(--ease-soft),
-        box-shadow 0.45s var(--ease-soft),
-        transform 0.45s var(--ease-out);
-    }
-
-    .modal-title {
-      font-size: clamp(18px, 4vw, 20px);
-      font-weight: 600;
-      color: #f0f0f0;
-      letter-spacing: -0.3px;
-      padding-right: 36px;
-    }
-
-    .modal-tagline {
-      font-size: 13px;
-      color: #666;
-      margin-top: 4px;
+      transition: color 0.3s var(--ease-soft), transform 0.4s var(--ease-out);
     }
 
     .modal-desc {
-      font-size: 13.5px;
-      color: #999;
-      line-height: 1.7;
-      margin: 18px 0 22px;
-    }
-
-    .modal-facts {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      list-style: none;
-      margin-bottom: 22px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 9px;
-    }
-
-    .modal-fact {
-      min-width: 0;
-      padding: 12px 14px;
-    }
-
-    .modal-fact + .modal-fact {
-      border-left: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .modal-fact-value {
-      overflow-wrap: anywhere;
-      color: #e8e8e8;
-      font-size: 12.5px;
-      font-weight: 500;
-      line-height: 1.3;
-    }
-
-    .modal-fact-label {
-      margin-top: 3px;
-      color: #666;
-      font-size: 10.5px;
-      line-height: 1.35;
-    }
-
-    /* modal stack chips: static wrapped row, same .skill chip styling
-       as the page marquee so they never drift apart */
-    .modal-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0 0 22px;
-    }
-
-    .modal-tags .skill {
-      margin-right: 0;
+      font-size: 13px;
+      color: var(--dim);
+      line-height: 1.8;
+      margin: 0 0 20px;
+      max-width: 60ch;
     }
 
     .modal-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      font-size: 13px;
+      gap: 4px 20px;
     }
 
-    /* .modal-links a styling lives in the shared .bottom a rules below,
-       so page links and modal links can never drift apart */
-
-    /* ── skills marquee ── */
-    .marquee-wrap {
-      margin-bottom: 28px;
-      position: relative;
-      overflow: hidden;
-      margin-left: -16px;
-      margin-right: -16px;
-      padding-left: 16px;
-      padding-right: 16px;
-      mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-      -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-      contain: paint;
-    }
-
-    .marquee {
-      display: flex;
-      width: max-content;
-      animation: scroll var(--marquee-duration, 20s) linear infinite;
-      will-change: transform;
-    }
-
-    @keyframes scroll {
-      0% { transform: translate3d(0, 0, 0); }
-      100% { transform: translate3d(-50%, 0, 0); }
-    }
-
-    .skill {
-      font-size: 12px;
-      color: #777;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: default;
-      transition:
-        color 0.25s var(--ease-soft),
-        border-color 0.25s var(--ease-soft),
-        background 0.25s var(--ease-soft),
-        transform 0.25s var(--ease-out);
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-right: 8px;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-
-    .skill.active {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.06);
-      transform: translateY(-2px);
-    }
-
-    .skill:active {
-      transform: translateY(0) scale(0.96);
-      transition-duration: 0.1s;
-    }
-
-    .skill:focus-visible {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.25);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
-    }
-
-    /* ── floating tooltip (JS-driven, outside marquee overflow) ── */
-    .tooltip {
-      position: fixed;
-      background: #141416;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 12px 16px;
-      max-width: 240px;
-      max-height: calc(100dvh - 16px);
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(6px) scale(0.96);
-      pointer-events: none;
-      transition:
-        opacity 0.22s var(--ease-soft),
-        transform 0.22s var(--ease-soft);
-      z-index: 9999;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    /* once visible, position changes animate too - the tooltip glides
-       between chips instead of jumping */
-    .tooltip.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      transition:
-        opacity 0.22s var(--ease-soft),
-        transform 0.22s var(--ease-soft),
-        left 0.3s var(--ease-out),
-        top 0.3s var(--ease-out);
-    }
-
-    .tooltip::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      /* JS sets --arrow-x as percentage of tooltip width */
-      left: var(--arrow-x, 50%);
-      transform: translateX(-50%);
-      border: 6px solid transparent;
-      border-top-color: #141416;
-      transition: left 0.3s var(--ease-out);
-    }
-
-    .tooltip.below::after {
-      top: auto;
-      bottom: 100%;
-      border-top-color: transparent;
-      border-bottom-color: #141416;
-    }
-
-    .tooltip-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #e0e0e0;
-      margin-bottom: 3px;
-    }
-
-    .tooltip-desc {
-      font-size: 11px;
-      color: #888;
-      line-height: 1.5;
-    }
-
-    /* ── footer links ── */
-    .bottom {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-size: 13px;
-    }
-
-    /* page links and modal links share these exact rules */
-    .bottom a,
     .modal-links a {
+      color: var(--dim);
+      text-decoration: none;
       position: relative;
       display: inline-flex;
       align-items: center;
-      padding: 4px 0;
-      text-decoration: none;
-      color: #777;
-      transition: color 0.25s var(--ease-soft), transform 0.25s var(--ease-soft);
+      gap: 5px;
+      padding: 3px 0;
+      transition: color 0.25s var(--ease-soft);
     }
 
-    .bottom a::after,
     .modal-links a::after {
       content: "";
       position: absolute;
       left: 0;
-      bottom: 1px;
+      bottom: 0;
       width: 100%;
       height: 1px;
-      background: #aaa;
+      background: var(--accent);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.3s var(--ease-out);
     }
 
-    .bottom a:hover,
     .modal-links a:hover {
       color: #fff;
-      transform: translateY(-1px);
     }
 
-    .bottom a:hover::after,
     .modal-links a:hover::after {
       transform: scaleX(1);
     }
 
-    /* ── contact ── */
-    .contact {
-      margin-top: 32px;
-      padding: 13px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      background: rgba(255, 255, 255, 0.022);
-      border: 1px solid rgba(255, 255, 255, 0.055);
-      border-radius: 9px;
-      transition:
-        background 0.35s var(--ease-soft),
-        border-color 0.35s var(--ease-soft),
-        box-shadow 0.35s var(--ease-soft);
-    }
-
-    .contact-copy {
-      min-width: 0;
-    }
-
-    .contact-title {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #999;
-      font-size: 11.5px;
-      font-weight: 500;
-      line-height: 1.4;
-      white-space: nowrap;
-    }
-
-    .contact-dot {
-      width: 6px;
-      height: 6px;
-      flex: 0 0 auto;
-      background: #23a55a;
-      border-radius: 50%;
-      box-shadow: 0 0 8px rgba(35, 165, 90, 0.25);
-    }
-
-    .contact-note {
-      margin-top: 2px;
-      color: #4f4f52;
+    .modal-esc {
+      position: fixed;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #4a4a4e;
       font-size: 10.5px;
-      line-height: 1.45;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-soft) 0.25s;
     }
 
-    .contact-actions {
-      display: flex;
-      flex: 0 0 auto;
-      gap: 6px;
+    .modal-backdrop.open .modal-esc {
+      opacity: 1;
     }
 
-    .contact-action {
-      min-height: 30px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      color: #777;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 6px;
-      font-size: 10.5px;
-      font-weight: 500;
-      line-height: 1;
-      text-decoration: none;
-      transition:
-        color 0.25s var(--ease-soft),
-        background 0.25s var(--ease-soft),
-        border-color 0.25s var(--ease-soft),
-        box-shadow 0.25s var(--ease-soft),
-        transform 0.3s var(--ease-out);
-    }
-
-    .contact-action-arrow {
-      color: #4f4f52;
-      transition: color 0.25s var(--ease-soft), transform 0.3s var(--ease-out);
+    /* ── hover-capable devices only ── */
+    @media (hover: hover) and (pointer: fine) {
+      .modal-close:hover {
+        color: #fff;
+        transform: rotate(90deg);
+      }
     }
 
     /* ── keyboard focus ── */
-    .project-card:focus-visible,
-    .bottom a:focus-visible,
+    .ls-item:focus-visible,
     .contact a:focus-visible,
     .modal-close:focus-visible,
     .modal-links a:focus-visible {
-      outline: 1px solid rgba(255, 255, 255, 0.25);
+      outline: 1px solid rgba(35, 165, 90, 0.5);
       outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 560px) {
+      body {
+        padding: 28px 18px 32px;
+        font-size: 12.5px;
+      }
+      .out, .ls, .stack, .contact {
+        padding-left: 20px;
+      }
+      .ls-desc {
+        white-space: normal;
+      }
+      .term-bar .ver {
+        display: none;
+      }
+      .modal {
+        padding: 22px 20px 24px;
+      }
+      .foot {
+        flex-direction: column;
+        gap: 2px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .fade { animation: none; opacity: 1; transform: none; }
-      .marquee { animation: none; transform: none; }
-      .tooltip, .tooltip.show { transition: none; }
-      .avatar, .status-dot { animation: none; }
-      body::before { animation: none; opacity: 1; }
+      .status-dot { animation: none; }
+      .cursor { animation: none; }
+      .contact a::after, .modal-links a::after { transition: none; }
       html { scroll-behavior: auto; }
       * { transition: none !important; }
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding-inline: 20px;
-      }
-      .avatar {
-        width: 42px;
-        height: 42px;
-      }
-      .modal {
-        padding: 26px 24px;
-      }
-      .modal-fact {
-        padding: 10px 9px;
-      }
-    }
-
-    /* landscape phones and other height-constrained windows */
-    @media (max-height: 520px) {
-      body {
-        padding: 16px 0;
-      }
-      .about {
-        margin: 18px 0 20px;
-      }
-      .project-card {
-        margin-bottom: 18px;
-      }
-      .marquee-wrap {
-        margin-bottom: 18px;
-      }
-      .contact {
-        margin-top: 20px;
-      }
-      .modal {
-        padding: 20px 22px;
-      }
-      .modal-desc {
-        margin: 12px 0 14px;
-      }
-    }
-
-    /* larger touch targets on touch devices */
-    @media (pointer: coarse) {
-      .modal-close {
-        width: 44px;
-        height: 44px;
-        font-size: 18px;
-      }
-      .skill {
-        padding: 10px 16px;
-      }
-      .bottom a,
-      .contact-action {
-        padding-top: 8px;
-        padding-bottom: 8px;
-      }
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .avatar:hover {
-        transform: scale(1.05);
-        border-color: rgba(255, 255, 255, 0.16);
-      }
-      .project-card:hover {
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.06),
-          0 10px 32px rgba(0, 0, 0, 0.2);
-        transform: translate3d(0, -2px, 0);
-      }
-      .project-card:hover .project-surface {
-        border-color: rgba(255, 255, 255, 0.16);
-        background: rgba(255, 255, 255, 0.035);
-      }
-      .project-card:hover .project-surface::before {
-        opacity: 1;
-      }
-      .project-card:hover .project-name {
-        color: #fff;
-      }
-      .project-card:hover .project-arrow {
-        color: #bbb;
-        transform: translate(3px, -3px);
-      }
-      .project-card:hover .project-desc {
-        color: #8a8a8a;
-      }
-      .modal-close:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.18);
-      }
-      .skill:hover {
-        color: #fff;
-        border-color: rgba(255, 255, 255, 0.15);
-        background: rgba(255, 255, 255, 0.06);
-        transform: translateY(-2px);
-      }
-      .contact:hover {
-        background: rgba(255, 255, 255, 0.028);
-        border-color: rgba(255, 255, 255, 0.11);
-      }
-      .contact-action:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.07);
-        border-color: rgba(255, 255, 255, 0.2);
-      }
-      .contact-action:hover .contact-action-arrow {
-        color: #ddd;
-        transform: translate(2px, -2px);
-      }
-    }
-
-    @media (max-width: 350px) {
-      .contact {
-        align-items: stretch;
-        flex-direction: column;
-      }
-      .contact-actions {
-        width: 100%;
-      }
-      .contact-action {
-        flex: 1;
-      }
-    }
-
-    /* ultrawide: let the compact column breathe a little, stay minimal */
-    @media (min-width: 2000px) {
-      .container {
-        width: min(500px, 100vw);
-      }
-      .profile-info h1 {
-        font-size: 24px;
-      }
-      .about {
-        font-size: 14.5px;
-      }
-      .project-name {
-        font-size: 16px;
-      }
-      .project-desc {
-        font-size: 13.5px;
-      }
-      .skill {
-        font-size: 13px;
-      }
-      .bottom {
-        font-size: 14px;
-      }
-      .contact {
-        font-size: 13px;
-      }
     }
   </style>
 </head>
 <body>
-  <main class="container">
+  <canvas id="hero-3d" aria-hidden="true"></canvas>
 
-    <div class="profile fade d1">
-      <img
-        class="avatar"
-        src="https://avatars.githubusercontent.com/u/167329163?v=4"
-        alt="imlucky"
-        width="48"
-        height="48"
-        decoding="async"
-      >
-      <div class="profile-info">
-        <h1>imlucky</h1>
-        <div class="status">
-          <span class="status-dot" aria-hidden="true"></span>
-          available for work
-        </div>
+  <main class="term">
+    <div class="term-bar fade d1" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="path">imlucky@vps: ~</span>
+      <span class="ver">zsh</span>
+    </div>
+
+    <div class="cmd fade d1">
+      <span class="prompt">~</span>
+      <span class="arg">whoami</span>
+    </div>
+    <div class="out fade d2">
+      <p><strong>imlucky</strong> — backend developer. 18, self-taught.</p>
+      <div class="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        available for backend work
       </div>
     </div>
 
-    <div class="about fade d2">
-      <strong>backend developer</strong>, 18, self-taught. i build systems and APIs that
-      hold up under real load. open to freelance work when something sounds fun.
+    <div class="cmd fade d2">
+      <span class="prompt">~</span>
+      <span class="arg">cat about.txt</span>
+    </div>
+    <div class="out fade d3">
+      <p>i build systems and APIs that hold up under real load. open to freelance when something sounds fun.</p>
     </div>
 
-    <div class="section-label fade d3">projects</div>
+    <div class="cmd fade d3">
+      <span class="prompt">~</span>
+      <span class="arg">ls projects/</span>
+    </div>
+    <div class="ls fade d4" id="projects"></div>
 
-    <div id="projects">
-      <!-- cards are generated from PROJECTS below; without JS this static card remains -->
-      <noscript>
-        <a class="project-card" href="https://lurec.net" target="_blank" rel="noopener noreferrer" aria-label="Lurec Network, multi-region Minecraft Bedrock practice server">
-          <span class="project-surface" aria-hidden="true"></span>
-          <div class="project-top">
-            <div class="project-name">Lurec Network</div>
-            <div class="project-arrow">↗</div>
-          </div>
-          <div class="project-desc">
-            Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.
-          </div>
-        </a>
-      </noscript>
+    <div class="cmd fade d4">
+      <span class="prompt">~</span>
+      <span class="arg">stack --current</span>
+    </div>
+    <div class="stack fade d5">
+      <span>php</span><span>pocketmine</span><span>typescript</span><span>nestjs</span><span>postgresql</span><span>mysql</span><span>linux</span><span>docker</span>
     </div>
 
-    <div class="section-label fade d4">stack</div>
-
-    <div class="marquee-wrap fade d4">
-      <div class="marquee">
-        <span class="skill" data-title="PHP" data-desc="Main language. PocketMine plugins, backends, web stuff.">PHP</span>
-        <span class="skill" data-title="PocketMine-MP" data-desc="Bedrock server software. Where I spend most of my time.">PocketMine</span>
-        <span class="skill" data-title="JavaScript" data-desc="Web frontends, tooling, automation scripts.">JavaScript</span>
-        <span class="skill" data-title="Linux" data-desc="Server admin, bash, keeping things running at 3am.">Linux</span>
-        <span class="skill" data-title="MySQL" data-desc="Databases for player data, stats, and everything in between.">MySQL</span>
-        <span class="skill" data-title="Docker" data-desc="Containerizing servers and services for easy deployment.">Docker</span>
-        <span class="skill" data-title="Git" data-desc="Version control. Can't live without it.">Git</span>
-        <span class="skill" data-title="REST APIs" data-desc="Connecting plugins to web services, Tebex, Discord bots.">REST APIs</span>
-        <!-- duplicate for seamless loop -->
-        <span class="skill" data-title="PHP" data-desc="Main language. PocketMine plugins, backends, web stuff.">PHP</span>
-        <span class="skill" data-title="PocketMine-MP" data-desc="Bedrock server software. Where I spend most of my time.">PocketMine</span>
-        <span class="skill" data-title="JavaScript" data-desc="Web frontends, tooling, automation scripts.">JavaScript</span>
-        <span class="skill" data-title="Linux" data-desc="Server admin, bash, keeping things running at 3am.">Linux</span>
-        <span class="skill" data-title="MySQL" data-desc="Databases for player data, stats, and everything in between.">MySQL</span>
-        <span class="skill" data-title="Docker" data-desc="Containerizing servers and services for easy deployment.">Docker</span>
-        <span class="skill" data-title="Git" data-desc="Version control. Can't live without it.">Git</span>
-        <span class="skill" data-title="REST APIs" data-desc="Connecting plugins to web services, Tebex, Discord bots.">REST APIs</span>
-      </div>
+    <div class="cmd fade d5">
+      <span class="prompt">~</span>
+      <span class="arg">contact --sort fastest</span>
     </div>
-
-    <div class="bottom fade d5">
-      <a href="https://github.com/imluckii" target="_blank" rel="noopener noreferrer" aria-label="GitHub">gh</a>
-      <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">x</a>
-      <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer" aria-label="Discord">dc</a>
-    </div>
-
     <div class="contact fade d6">
-      <div class="contact-copy">
-        <div class="contact-title">
-          <span class="contact-dot" aria-hidden="true"></span>
-          available for backend work
-        </div>
-        <div class="contact-note">have something interesting to build?</div>
-      </div>
-      <div class="contact-actions">
-        <a class="contact-action" href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">
-          discord <span class="contact-action-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="contact-action" href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">
-          x <span class="contact-action-arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
+      <a href="https://discord.com/users/531847986091917312" target="_blank" rel="noopener noreferrer">discord <span class="arrow" aria-hidden="true">↗</span></a>
+      <a href="https://x.com/imlucki_" target="_blank" rel="noopener noreferrer">x <span class="arrow" aria-hidden="true">↗</span></a>
+      <a href="https://github.com/imluckii" target="_blank" rel="noopener noreferrer">github <span class="arrow" aria-hidden="true">↗</span></a>
     </div>
 
+    <div class="cmd fade d6" aria-hidden="true">
+      <span class="prompt">~</span>
+      <span class="cursor"></span>
+    </div>
+
+    <div class="foot fade d6">
+      <span>© 2026 imlucky</span>
+      <span>built by hand. no framework.</span>
+    </div>
   </main>
 
-  <!-- floating tooltip (outside marquee overflow context) -->
-  <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true">
-    <div class="tooltip-title" id="tooltip-title"></div>
-    <div class="tooltip-desc" id="tooltip-desc"></div>
-  </div>
-
-  <!-- project modal -->
   <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" inert>
     <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
-      <div class="modal-surface" id="modal-surface" aria-hidden="true"></div>
-      <div class="modal-content" id="modal-content">
-        <button class="modal-close" id="modal-close" type="button" aria-label="Close project details">&times;</button>
-        <h2 class="modal-title" id="modal-title">Project details</h2>
-        <div class="modal-tagline" id="modal-tagline"></div>
-        <p class="modal-desc" id="modal-desc"></p>
-        <ul class="modal-facts" id="modal-facts" aria-label="Project facts"></ul>
-        <div class="modal-tags" id="modal-stack"></div>
-        <div class="section-label">resources</div>
-        <div class="modal-links" id="modal-links"></div>
+      <div class="modal-bar" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="name" id="modal-path">~/projects</span>
       </div>
+      <button class="modal-close" id="modal-close" type="button" aria-label="Close project details">&times;</button>
+      <h2 class="modal-title" id="modal-title" style="font-size: 15px; font-weight: 500; color: #e8e8ea;"></h2>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-links" id="modal-links"></div>
     </div>
+    <div class="modal-esc">esc to close</div>
   </div>
 
   <script>
     const PROJECTS = [
       {
-        id: 'lurec',
-        name: 'Lurec Network',
-        tagline: 'Multi-region Minecraft Bedrock practice server',
-        cardDesc: 'Multi-region Minecraft Bedrock practice server. Custom backend, matchmaking, anti-cheat. 15k+ players.',
-        description: 'A multi-region Minecraft Bedrock practice server. The backend is a fully custom NestJS API written in TypeScript, backed by PostgreSQL with Prisma handling data access, and the game layer runs PocketMine plugins in PHP. Built from scratch to serve 15k+ concurrent players across regions.',
-        facts: [
-          { value: '15k+', label: 'players' },
-          { value: 'Multi-region', label: 'deployment' },
-          { value: 'Custom', label: 'backend stack' },
-        ],
-        stack: ['TypeScript', 'NestJS', 'PostgreSQL', 'Prisma', 'PHP', 'PocketMine-MP', 'JavaScript', 'Docker', 'Linux'],
+        id: 'lurec-network',
+        name: 'lurec-network',
+        cardDesc: 'multi-region mc bedrock practice server — 15k+ players',
+        description: 'Multi-region Minecraft Bedrock practice server. The backend is a fully custom NestJS API written in TypeScript, backed by PostgreSQL with Prisma handling data access, and the game layer runs PocketMine plugins in PHP. Built from scratch to serve 15k+ concurrent players across regions.',
         links: [
           { label: 'lurec.net', url: 'https://lurec.net' },
         ],
@@ -1071,223 +663,75 @@
       // add more projects here
     ];
 
-    function setMarqueeSpeed(marquee) {
-      if (!marquee || !marquee.scrollWidth) return;
-      var distance = marquee.scrollWidth / 2;
-      var duration = Math.max(14, Math.min(32, distance / 34));
-      marquee.style.setProperty('--marquee-duration', duration + 's');
-    }
-
-    /* ── project cards + modal ── */
+    /* ── project list + panel ── */
     (function () {
-      var list = document.getElementById('projects');
-      var backdrop = document.getElementById('modal-backdrop');
-      var modal = document.getElementById('modal');
-      var modalSurface = document.getElementById('modal-surface');
-      var modalContent = document.getElementById('modal-content');
-      var closeBtn = document.getElementById('modal-close');
-      var titleEl = document.getElementById('modal-title');
-      var taglineEl = document.getElementById('modal-tagline');
-      var descEl = document.getElementById('modal-desc');
-      var factsEl = document.getElementById('modal-facts');
-      var stackEl = document.getElementById('modal-stack');
-      var linksEl = document.getElementById('modal-links');
-      var lastTrigger = null;
-      var activeTransition = null;
-      var closeQueued = false;
+      const list = document.getElementById('projects');
+      const backdrop = document.getElementById('modal-backdrop');
+      const modal = document.getElementById('modal');
+      const closeBtn = document.getElementById('modal-close');
+      const titleEl = document.getElementById('modal-title');
+      const pathEl = document.getElementById('modal-path');
+      const descEl = document.getElementById('modal-desc');
+      const linksEl = document.getElementById('modal-links');
 
-      function canMorph() {
-        return typeof document.startViewTransition === 'function'
-          && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      }
-
-      function transitionBetween(source, destination, contentDirection, update) {
-        if (!canMorph()) {
-          update();
-          return;
-        }
-
-        source.style.viewTransitionName = 'project-surface';
-        if (contentDirection === 'out') {
-          modalContent.style.viewTransitionName = 'modal-content';
-        }
-        document.documentElement.classList.add('view-transitioning');
-
-        activeTransition = document.startViewTransition(function () {
-          source.classList.add('transition-source');
-          destination.style.viewTransitionName = 'project-surface';
-          if (contentDirection === 'in') {
-            modalContent.style.viewTransitionName = 'modal-content';
-          } else {
-            modalContent.classList.add('transition-source');
-          }
-          update();
-        });
-
-        function cleanUp() {
-          source.classList.remove('transition-source');
-          source.style.removeProperty('view-transition-name');
-          destination.style.removeProperty('view-transition-name');
-          modalContent.classList.remove('transition-source');
-          modalContent.style.removeProperty('view-transition-name');
-          document.documentElement.classList.remove('view-transitioning');
-          activeTransition = null;
-
-          if (closeQueued) {
-            closeQueued = false;
-            closeModal();
-          }
-        }
-
-        activeTransition.finished.then(cleanUp, cleanUp);
-      }
-
-      function showModal(trigger) {
-        lastTrigger = trigger || null;
-        if (lastTrigger) lastTrigger.setAttribute('aria-expanded', 'true');
-        backdrop.inert = false;
-        backdrop.setAttribute('aria-hidden', 'false');
-        document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px');
-        document.documentElement.classList.add('modal-open');
-        backdrop.classList.add('open');
-        requestAnimationFrame(function () {
-          if (backdrop.classList.contains('open')) {
-            closeBtn.focus({ preventScroll: true });
-          }
-        });
-      }
-
-      function hideModal(trigger) {
-        backdrop.classList.remove('open');
-        document.documentElement.classList.remove('modal-open');
-        document.documentElement.style.removeProperty('--scrollbar-width');
-        if (trigger) {
-          trigger.setAttribute('aria-expanded', 'false');
-          trigger.focus({ preventScroll: true });
-        }
-        backdrop.inert = true;
-        backdrop.setAttribute('aria-hidden', 'true');
-        lastTrigger = null;
-      }
-
-      function openModal(project, trigger) {
-        if (backdrop.classList.contains('open') || activeTransition) return;
+      function openModal(project) {
+        if (backdrop.classList.contains('open')) return;
 
         titleEl.textContent = project.name;
-        taglineEl.textContent = project.tagline;
+        pathEl.textContent = '~/projects/' + project.id;
         descEl.textContent = project.description;
-
-        factsEl.innerHTML = '';
-        project.facts.forEach(function (fact) {
-          var item = document.createElement('li');
-          item.className = 'modal-fact';
-
-          var value = document.createElement('div');
-          value.className = 'modal-fact-value';
-          value.textContent = fact.value;
-
-          var label = document.createElement('div');
-          label.className = 'modal-fact-label';
-          label.textContent = fact.label;
-
-          item.appendChild(value);
-          item.appendChild(label);
-          factsEl.appendChild(item);
-        });
-
-        stackEl.innerHTML = '';
-        project.stack.forEach(function (tech) {
-          var badge = document.createElement('span');
-          badge.className = 'skill';
-          badge.textContent = tech;
-          stackEl.appendChild(badge);
-        });
 
         linksEl.innerHTML = '';
         project.links.forEach(function (link) {
-          var a = document.createElement('a');
+          const a = document.createElement('a');
           a.href = link.url;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
-          a.textContent = link.label + ' ↗';
+          a.innerHTML = link.label + ' <span class="arrow" aria-hidden="true">↗</span>';
           linksEl.appendChild(a);
         });
 
-        transitionBetween(trigger.querySelector('.project-surface'), modalSurface, 'in', function () {
-          showModal(trigger);
+        backdrop.inert = false;
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.setProperty('--scrollbar-width', (window.innerWidth - document.documentElement.clientWidth) + 'px');
+        backdrop.classList.add('open');
+        requestAnimationFrame(function () {
+          closeBtn.focus({ preventScroll: true });
         });
       }
 
       function closeModal() {
-        if (activeTransition) {
-          closeQueued = true;
-          return;
-        }
-
         if (!backdrop.classList.contains('open')) return;
-
-        var trigger = lastTrigger;
-        if (!trigger) {
-          hideModal(null);
-          return;
-        }
-        transitionBetween(modalSurface, trigger.querySelector('.project-surface'), 'out', function () {
-          hideModal(trigger);
-        });
+        backdrop.classList.remove('open');
+        backdrop.inert = true;
+        backdrop.setAttribute('aria-hidden', 'true');
       }
 
-      // build the cards from PROJECTS so adding one later is a one-object change
       PROJECTS.forEach(function (project) {
-        var primary = project.links[0];
+        const item = document.createElement('button');
+        item.className = 'ls-item';
+        item.type = 'button';
+        item.setAttribute('aria-haspopup', 'dialog');
+        item.setAttribute('aria-label', project.name + ' — ' + project.cardDesc);
 
-        var card = document.createElement('a');
-        card.className = 'project-card fade d3';
-        card.href = primary ? primary.url : '#';
-        if (primary) {
-          card.target = '_blank';
-          card.rel = 'noopener noreferrer';
-        }
-        card.setAttribute('aria-label', project.name + ', ' + project.tagline);
-        card.setAttribute('aria-haspopup', 'dialog');
-        card.setAttribute('aria-controls', 'modal');
-        card.setAttribute('aria-expanded', 'false');
-
-        var surface = document.createElement('span');
-        surface.className = 'project-surface';
-        surface.setAttribute('aria-hidden', 'true');
-
-        var top = document.createElement('div');
-        top.className = 'project-top';
-
-        var name = document.createElement('div');
-        name.className = 'project-name';
+        const name = document.createElement('span');
+        name.className = 'ls-name';
         name.textContent = project.name;
 
-        var arrow = document.createElement('div');
-        arrow.className = 'project-arrow';
+        const desc = document.createElement('span');
+        desc.className = 'ls-desc';
+        desc.textContent = project.cardDesc;
+
+        const arrow = document.createElement('span');
+        arrow.className = 'ls-arrow';
         arrow.textContent = '↗';
         arrow.setAttribute('aria-hidden', 'true');
 
-        top.appendChild(name);
-        top.appendChild(arrow);
-
-        var desc = document.createElement('div');
-        desc.className = 'project-desc';
-        desc.textContent = project.cardDesc;
-
-        card.appendChild(surface);
-        card.appendChild(top);
-        card.appendChild(desc);
-
-        // JS intercepts plain clicks and opens the modal instead of navigating;
-        // ctrl/cmd/middle clicks still open the link in a new tab
-        card.addEventListener('click', function (e) {
-          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-          e.preventDefault();
-          openModal(project, card);
-        });
-
-        list.appendChild(card);
+        item.appendChild(name);
+        item.appendChild(desc);
+        item.appendChild(arrow);
+        item.addEventListener('click', function () { openModal(project); });
+        list.appendChild(item);
       });
 
       closeBtn.addEventListener('click', closeModal);
@@ -1297,183 +741,87 @@
       });
 
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-          if (backdrop.classList.contains('open') || activeTransition) closeModal();
-          return;
-        }
-
-        if (!backdrop.classList.contains('open')) return;
-        if (e.key !== 'Tab') return;
-        var focusable = modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
-        if (!focusable.length) {
-          e.preventDefault();
-          modal.focus();
-          return;
-        }
-
-        var first = focusable[0];
-        var last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
+        if (e.key === 'Escape') closeModal();
       });
     })();
+  </script>
 
-    /* ── skills tooltip ── */
-    (function () {
-      var tooltip = document.getElementById('tooltip');
-      var titleEl = document.getElementById('tooltip-title');
-      var descEl = document.getElementById('tooltip-desc');
-      var marquee = document.querySelector('.container .marquee');
-      var skills = Array.prototype.slice.call(marquee.querySelectorAll('.skill'));
-      var currentSkill = null;
-      var lastPointerType = 'mouse';
-      var hideTimer = null;
+  <script type="module">
+    /* ── 3d layer: monochrome dust + wireframe, same as main site ── */
+    (async () => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      try {
+        const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js');
+        const canvas = document.getElementById('hero-3d');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-      function pauseMarquee() {
-        marquee.style.animationPlayState = 'paused';
-      }
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
 
-      function resumeMarquee() {
-        marquee.style.animationPlayState = 'running';
-      }
+        const ico = new THREE.LineSegments(
+          new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(2.6, 1)),
+          new THREE.LineBasicMaterial({ color: 0x333338, transparent: true, opacity: 0.45 })
+        );
+        ico.position.set(3.4, 0.6, -2);
+        scene.add(ico);
 
-      function positionTip(skill) {
-        if (!skill || !document.documentElement.contains(skill)) return;
+        const N = 300;
+        const pos = new Float32Array(N * 3);
+        for (let i = 0; i < N; i++) {
+          pos[i * 3] = (Math.random() - 0.5) * 24;
+          pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+          pos[i * 3 + 2] = (Math.random() - 0.5) * 12;
+        }
+        const dustGeo = new THREE.BufferGeometry();
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const dust = new THREE.Points(
+          dustGeo,
+          new THREE.PointsMaterial({ color: 0x8a8a92, size: 0.035, transparent: true, opacity: 0.5, sizeAttenuation: true, depthWrite: false })
+        );
+        scene.add(dust);
 
-        var tipWidth = Math.min(240, window.innerWidth - 16);
-        tooltip.style.width = tipWidth + 'px';
-        var tipHeight = tooltip.offsetHeight;
-        var rect = skill.getBoundingClientRect();
-        var gap = 12;
-        var spaceAbove = rect.top - 8;
-        var spaceBelow = window.innerHeight - rect.bottom - 8;
-        var showBelow = spaceAbove < tipHeight + gap && spaceBelow > spaceAbove;
-        var left = rect.left + rect.width / 2 - tipWidth / 2;
-        var top = showBelow ? rect.bottom + gap : rect.top - tipHeight - gap;
+        let mx = 0, my = 0;
+        addEventListener('pointermove', (e) => {
+          mx = (e.clientX / innerWidth - 0.5) * 2;
+          my = (e.clientY / innerHeight - 0.5) * 2;
+        }, { passive: true });
 
-        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
-        top = Math.max(8, Math.min(top, window.innerHeight - tipHeight - 8));
-        tooltip.classList.toggle('below', showBelow);
-        tooltip.style.left = left + 'px';
-        tooltip.style.top = top + 'px';
+        function resize() {
+          renderer.setSize(innerWidth, innerHeight, false);
+          camera.aspect = innerWidth / innerHeight;
+          camera.position.z = camera.aspect < 0.8 ? 12.5 : 9;
+          camera.updateProjectionMatrix();
+        }
+        resize();
+        addEventListener('resize', resize, { passive: true });
 
-        var skillCenter = rect.left + rect.width / 2;
-        var arrowX = Math.max(20, Math.min(skillCenter - left, tipWidth - 20));
-        tooltip.style.setProperty('--arrow-x', arrowX + 'px');
-      }
-
-      function showTip(skill) {
-        var title = skill.getAttribute('data-title');
-        var desc = skill.getAttribute('data-desc');
-        if (!title) return;
-
-        // cancel any pending hide
-        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-
-        titleEl.textContent = title;
-        descEl.textContent = desc;
-        pauseMarquee();
-        positionTip(skill);
-        tooltip.setAttribute('aria-hidden', 'false');
-
-        // use rAF so position is painted before the show transition triggers
-        requestAnimationFrame(function () {
-          tooltip.classList.add('show');
+        let running = true, raf;
+        document.addEventListener('visibilitychange', () => {
+          running = !document.hidden;
+          if (running) raf = requestAnimationFrame(tick);
         });
 
-        // lock the highlight to this skill so the CSS :hover can't
-        // drift to a neighbour while the marquee is paused/scrolling
-        if (currentSkill) currentSkill.classList.remove('active');
-        currentSkill = skill;
-        skill.classList.add('active');
-      }
-
-      function hideTip() {
-        tooltip.classList.remove('show');
-        tooltip.setAttribute('aria-hidden', 'true');
-        if (currentSkill) currentSkill.classList.remove('active');
-        currentSkill = null;
-        resumeMarquee();
-      }
-
-      function scheduleHide() {
-        if (hideTimer) clearTimeout(hideTimer);
-        hideTimer = setTimeout(hideTip, 80);
-      }
-
-      function cancelHide() {
-        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
-      }
-
-      skills.forEach(function (skill, index) {
-        if (index < skills.length / 2) {
-          skill.tabIndex = 0;
-          skill.setAttribute('aria-describedby', 'tooltip');
-        } else {
-          skill.setAttribute('aria-hidden', 'true');
+        const clock = new THREE.Clock();
+        function tick() {
+          if (!running) return;
+          const t = clock.getElapsedTime();
+          ico.rotation.x = t * 0.1;
+          ico.rotation.y = t * 0.16;
+          ico.position.y = 0.6 + Math.sin(t * 0.5) * 0.25;
+          dust.rotation.y = t * 0.02;
+          camera.position.x += (mx * 0.4 - camera.position.x) * 0.03;
+          camera.position.y += (-my * 0.3 - camera.position.y) * 0.03;
+          camera.lookAt(0, 0, 0);
+          renderer.render(scene, camera);
+          raf = requestAnimationFrame(tick);
         }
 
-        skill.addEventListener('pointerenter', function (e) {
-          if (e.pointerType === 'touch') return;
-          cancelHide();
-          showTip(skill);
-        });
-        skill.addEventListener('pointerleave', function (e) {
-          if (e.pointerType === 'touch') return;
-          scheduleHide();
-        });
-
-        skill.addEventListener('pointerdown', function (e) {
-          lastPointerType = e.pointerType;
-        });
-        skill.addEventListener('click', function () {
-          if (lastPointerType !== 'touch') return;
-          if (currentSkill === skill) {
-            hideTip();
-          } else {
-            showTip(skill);
-          }
-        });
-
-        skill.addEventListener('focus', function () {
-          cancelHide();
-          showTip(skill);
-        });
-        skill.addEventListener('blur', scheduleHide);
-      });
-
-      document.addEventListener('pointerdown', function (e) {
-        if (e.pointerType === 'touch' && currentSkill && !currentSkill.contains(e.target)) {
-          hideTip();
-        }
-      });
-
-      window.addEventListener('scroll', hideTip, { passive: true });
-      window.addEventListener('resize', function () {
-        if (currentSkill) positionTip(currentSkill);
-      }, { passive: true });
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) hideTip();
-      });
-    })();
-
-    /* ── keep marquee motion at a consistent pixel speed ── */
-    (function () {
-      var marquees = document.querySelectorAll('.marquee');
-      function sync() {
-        marquees.forEach(setMarqueeSpeed);
-      }
-
-      window.addEventListener('resize', sync, { passive: true });
-      window.addEventListener('load', sync);
-      sync();
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(sync);
+        renderer.render(scene, camera);
+        canvas.classList.add('on');
+        raf = requestAnimationFrame(tick);
+      } catch (err) {
+        console.debug('hero3d disabled:', err);
       }
     })();
   </script>
