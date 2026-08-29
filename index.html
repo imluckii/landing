@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>imlucky</title>
   <meta name="description" content="imlucky — backend developer. systems and APIs that hold up under real load.">
+  <meta name="theme-color" content="#0a0a0b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230a0a0b'/%3E%3Ctext x='50' y='68' font-size='52' font-family='monospace' fill='%2323a55a' text-anchor='middle'%3E~%3C/text%3E%3C/svg%3E">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="imlucky">
+  <meta property="og:description" content="backend developer. systems and APIs that hold up under real load.">
+  <meta property="og:url" content="https://imlucky.is-a.dev/">
+  <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -360,7 +367,7 @@
       to { opacity: 1; transform: none; }
     }
 
-    /* ── project panel ── */
+    /* project panel */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -430,6 +437,13 @@
 
     .modal-bar .name {
       color: var(--dim);
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: #e8e8ea;
+      margin-bottom: 6px;
     }
 
     .modal-close {
@@ -552,10 +566,6 @@
       .modal {
         padding: 22px 20px 24px;
       }
-      .foot {
-        flex-direction: column;
-        gap: 2px;
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -631,7 +641,6 @@
 
     <div class="foot fade d6">
       <span>© 2026 imlucky</span>
-      <span>built by hand. no framework.</span>
     </div>
   </main>
 
@@ -642,7 +651,7 @@
         <span class="name" id="modal-path">~/projects</span>
       </div>
       <button class="modal-close" id="modal-close" type="button" aria-label="Close project details">&times;</button>
-      <h2 class="modal-title" id="modal-title" style="font-size: 15px; font-weight: 500; color: #e8e8ea;"></h2>
+      <h2 class="modal-title" id="modal-title"></h2>
       <p class="modal-desc" id="modal-desc"></p>
       <div class="modal-links" id="modal-links"></div>
     </div>
